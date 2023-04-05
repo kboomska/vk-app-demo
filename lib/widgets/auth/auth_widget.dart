@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vk_app/theme/app_text_field.dart';
+
+import '/theme/app_button_style.dart';
+import '/theme/app_colors.dart';
 
 class AuthWidget extends StatefulWidget {
   const AuthWidget({super.key});
@@ -11,6 +15,7 @@ class _AuthWidgetState extends State<AuthWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: _HeaderWidget(),
     );
   }
@@ -22,34 +27,37 @@ class _HeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 48,
+      ),
       child: Column(
         children: [
-          SizedBox(
-            height: 128,
+          const SizedBox(
+            height: 100,
           ),
           Container(
-            height: 50,
-            width: 50,
+            height: 60,
+            width: 60,
             decoration: BoxDecoration(
-              color: Color.fromRGBO(0, 119, 255, 1),
-              borderRadius: BorderRadius.circular(12),
+              color: AppColors.logoBlue,
+              borderRadius: BorderRadius.circular(14),
             ),
-            child: Center(
+            child: const Center(
               child: Text(
                 'VK',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 26,
-                  fontWeight: FontWeight.w700,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w900,
                 ),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Text(
+          const Text(
             'Вход ВКонтакте',
             style: TextStyle(
               color: Colors.black,
@@ -57,46 +65,18 @@ class _HeaderWidget extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          TextField(),
-          SizedBox(
-            height: 20,
-          ),
+          _FormWidget(),
+          const Spacer(),
           OutlinedButton(
             onPressed: () {
-              print('Войти');
+              print('Зарегистрироваться');
             },
-            style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(
-                Color.fromRGBO(38, 136, 235, 1),
-              ),
-              foregroundColor: MaterialStatePropertyAll(
-                Colors.white,
-              ),
-              overlayColor: MaterialStatePropertyAll(
-                // Color.fromRGBO(38, 136, 235, 0.64),
-                Color.fromRGBO(255, 255, 255, 0.34),
-              ),
-              splashFactory: NoSplash.splashFactory,
-              minimumSize: MaterialStatePropertyAll(
-                Size.fromHeight(44),
-              ),
-              shape: MaterialStatePropertyAll(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              side: MaterialStatePropertyAll(BorderSide.none),
-              // textStyle: MaterialStatePropertyAll(
-              //   TextStyle(
-              //     color: Colors.green,
-              //   ),
-              // ),
-            ),
-            child: Text(
-              'Войти',
+            style: AppButtonStyle.greenStyleButton,
+            child: const Text(
+              'Зарегистрироваться',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -106,6 +86,48 @@ class _HeaderWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _FormWidget extends StatefulWidget {
+  const _FormWidget({super.key});
+
+  @override
+  State<_FormWidget> createState() => __FormWidgetState();
+}
+
+class __FormWidgetState extends State<_FormWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          style: const TextStyle(
+            fontSize: 16,
+          ),
+          cursorColor: AppColors.logoBlue,
+          cursorHeight: 20,
+          decoration: AppTextField.inputDecoration(hintText: 'Телефон или почта'),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        OutlinedButton(
+          onPressed: () {
+            print('Войти');
+          },
+          style: AppButtonStyle.blueStyleButton,
+          child: const Text(
+            'Войти',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
