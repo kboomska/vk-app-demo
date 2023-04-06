@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 abstract class AppTextField {
-  static inputDecoration({String? hintText}) {
+  static inputDecoration({bool isNegative = false, String? hintText}) {
     return InputDecoration(
       hintText: hintText,
       hintStyle: const TextStyle(
@@ -11,12 +11,16 @@ abstract class AppTextField {
         fontSize: 16,
       ),
       filled: true,
-      fillColor: AppColors.textFieldFill,
+      fillColor: !isNegative
+          ? AppColors.textFieldFill
+          : AppColors.textFieldFillNegative,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
-        borderSide: const BorderSide(
+        borderSide: BorderSide(
           width: 1,
-          color: AppColors.textFieldBorder,
+          color: !isNegative
+              ? AppColors.textFieldBorder
+              : AppColors.textFieldBorderNegative,
         ),
       ),
       contentPadding: const EdgeInsets.symmetric(
@@ -26,9 +30,11 @@ abstract class AppTextField {
       isCollapsed: true,
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
-        borderSide: const BorderSide(
+        borderSide: BorderSide(
           width: 1,
-          color: AppColors.buttonBlue,
+          color: !isNegative
+              ? AppColors.buttonBlue
+              : AppColors.textFieldBorderNegative,
         ),
       ),
     );

@@ -9,4 +9,6 @@ abstract class AppColors {
 
   static const textFieldFill = Color.fromRGBO(235, 236, 239, 1);
   static const textFieldBorder = Color.fromRGBO(129, 140, 153, 1);
+  static const textFieldFillNegative = Color.fromRGBO(240, 226, 228, 1);
+  static const textFieldBorderNegative = Color.fromRGBO(230, 70, 70, 1);
 }

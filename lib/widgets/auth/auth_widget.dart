@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vk_app/theme/app_text_field.dart';
 
 import '/theme/app_button_style.dart';
+import '/theme/app_text_field.dart';
 import '/theme/app_colors.dart';
 
 class AuthWidget extends StatefulWidget {
@@ -26,7 +26,8 @@ class _HeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      constraints: BoxConstraints.expand(),
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 48,
@@ -98,25 +99,70 @@ class _FormWidget extends StatefulWidget {
 }
 
 class __FormWidgetState extends State<_FormWidget> {
+  final _loginTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+
+  // AppTextField formDecoration = AppTextField.inputDecoration(hintText: 'Введите почту');
+
+  String? errorText = null;
+  bool isNegative = false;
+
+  void _login() {
+    final login = _loginTextController.text;
+
+    if (login == 'admin') {
+      errorText = null;
+      isNegative = false;
+      print('Войти');
+    } else if (login == '') {
+      errorText = 'Не указана почта';
+      isNegative = true;
+      print('Пустое поле ввода');
+    } else {
+      errorText = 'Неверный адрес почты';
+      isNegative = true;
+      print('Ошибка при вводе почты');
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    final errorText = this.errorText;
+    final isNegative = this.isNegative;
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextField(
+          controller: _loginTextController,
           style: const TextStyle(
             fontSize: 16,
           ),
           cursorColor: AppColors.logoBlue,
           cursorHeight: 20,
-          decoration: AppTextField.inputDecoration(hintText: 'Телефон или почта'),
+          decoration: AppTextField.inputDecoration(
+            hintText: 'Введите почту',
+            isNegative: isNegative,
+          ),
         ),
+        if (errorText != null) ...[
+          SizedBox(
+            height: 8,
+          ),
+          Text(
+            errorText,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.red,
+            ),
+          ),
+        ],
         const SizedBox(
           height: 20,
         ),
         OutlinedButton(
-          onPressed: () {
-            print('Войти');
-          },
+          onPressed: _login,
           style: AppButtonStyle.blueStyleButton,
           child: const Text(
             'Войти',
