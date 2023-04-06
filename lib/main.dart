@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/widgets/auth/password_widget.dart';
 import 'widgets/auth/auth_widget.dart';
 
 void main() {
@@ -14,7 +15,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'VK App',
-      home: AuthWidget(),
+      routes: {
+        '/login': (context) => AuthWidget(),
+        '/password': (context) => PasswordWidget(),
+      },
+      initialRoute: '/login',
     );
   }
 }

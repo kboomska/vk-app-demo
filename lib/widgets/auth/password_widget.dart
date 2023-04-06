@@ -4,25 +4,26 @@ import '/theme/app_button_style.dart';
 import '/theme/app_text_field.dart';
 import '/theme/app_colors.dart';
 
-class AuthWidget extends StatefulWidget {
-  const AuthWidget({super.key});
+class PasswordWidget extends StatefulWidget {
+  const PasswordWidget({super.key});
 
   @override
-  State<AuthWidget> createState() => _AuthWidgetState();
+  State<PasswordWidget> createState() => _PasswordWidgetState();
 }
 
-class _AuthWidgetState extends State<AuthWidget> {
+class _PasswordWidgetState extends State<PasswordWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       resizeToAvoidBottomInset: false,
-      body: _HeaderWidget(),
+      body: _HeaderOfPasswordWidget(),
     );
   }
 }
 
-class _HeaderWidget extends StatelessWidget {
-  const _HeaderWidget({super.key});
+class _HeaderOfPasswordWidget extends StatelessWidget {
+  const _HeaderOfPasswordWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,32 +34,45 @@ class _HeaderWidget extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const SizedBox(
-            height: 100,
-          ),
-          Container(
-            height: 60,
-            width: 60,
-            decoration: BoxDecoration(
-              color: AppColors.logoBlue,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: const Center(
-              child: Text(
-                'VK',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w900,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 22,
+                width: 22,
+                decoration: BoxDecoration(
+                  color: AppColors.logoBlue,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: const Center(
+                  child: Text(
+                    'VK',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(
+                width: 4,
+              ),
+              const Text(
+                'ID',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
           const SizedBox(
             height: 20,
           ),
           const Text(
-            'Вход ВКонтакте',
+            'Введите пароль',
             style: TextStyle(
               color: Colors.black,
               fontSize: 20,
@@ -68,15 +82,15 @@ class _HeaderWidget extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          _FormWidget(),
+          _FormOfPasswordWidget(),
           const Spacer(),
           OutlinedButton(
             onPressed: () {
-              print('Зарегистрироваться');
+              print('Продолжить');
             },
-            style: AppButtonStyle.greenStyleButton,
+            style: AppButtonStyle.blueStyleButton,
             child: const Text(
-              'Зарегистрироваться',
+              'Продолжить',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -90,15 +104,15 @@ class _HeaderWidget extends StatelessWidget {
   }
 }
 
-class _FormWidget extends StatefulWidget {
-  const _FormWidget({super.key});
+class _FormOfPasswordWidget extends StatefulWidget {
+  const _FormOfPasswordWidget({super.key});
 
   @override
-  State<_FormWidget> createState() => __FormWidgetState();
+  State<_FormOfPasswordWidget> createState() => __FormOfPasswordWidgetState();
 }
 
-class __FormWidgetState extends State<_FormWidget> {
-  final _loginTextController = TextEditingController(text: 'admin');
+class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
+  final _loginTextController = TextEditingController();
 
   String? errorText = null;
   bool isNegative = false;
@@ -138,8 +152,9 @@ class __FormWidgetState extends State<_FormWidget> {
           ),
           cursorColor: AppColors.logoBlue,
           cursorHeight: 20,
+          obscureText: true,
           decoration: AppTextField.inputDecoration(
-            hintText: 'Введите почту',
+            hintText: 'Введите пароль',
             isNegative: isNegative,
           ),
         ),
@@ -162,7 +177,7 @@ class __FormWidgetState extends State<_FormWidget> {
           onPressed: _login,
           style: AppButtonStyle.blueStyleButton,
           child: const Text(
-            'Войти',
+            'Забыли или не установили пароль?',
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
