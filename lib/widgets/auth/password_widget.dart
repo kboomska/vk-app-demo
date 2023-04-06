@@ -17,6 +17,7 @@ class _PasswordWidgetState extends State<PasswordWidget> {
     return Scaffold(
       appBar: AppBar(),
       resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
       body: _HeaderOfPasswordWidget(),
     );
   }
@@ -38,8 +39,8 @@ class _HeaderOfPasswordWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                height: 22,
-                width: 22,
+                height: 20,
+                width: 20,
                 decoration: BoxDecoration(
                   color: AppColors.logoBlue,
                   borderRadius: BorderRadius.circular(5),
@@ -49,7 +50,7 @@ class _HeaderOfPasswordWidget extends StatelessWidget {
                     'VK',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 12,
+                      fontSize: 11,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
@@ -77,6 +78,26 @@ class _HeaderOfPasswordWidget extends StatelessWidget {
               color: Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Text(
+            'Укажите пароль, привязанный к почте',
+            style: TextStyle(
+              fontSize: 16,
+              color: AppColors.textFieldHint,
+            ),
+          ),
+          const SizedBox(
+            height: 4,
+          ),
+          Text(
+            'login@mail.ru.login@mail.ru',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
             ),
           ),
           const SizedBox(
@@ -112,29 +133,34 @@ class _FormOfPasswordWidget extends StatefulWidget {
 }
 
 class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
-  final _loginTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
 
   String? errorText = null;
   bool isNegative = false;
 
-  void _login() {
-    final login = _loginTextController.text;
+  void _password() {
+    final password = _passwordTextController.text;
 
-    if (login == 'admin') {
+    if (password == 'admin') {
       errorText = null;
       isNegative = false;
 
-      Navigator.of(context).pushNamed('/password', arguments: login);
-    } else if (login == '') {
+      print('Продолжить');
+      // Navigator.of(context).pushNamed('/password');
+    } else if (password == '') {
       errorText = 'Не указана почта';
       isNegative = true;
       print('Пустое поле ввода');
     } else {
-      errorText = 'Неверный адрес почты';
+      errorText = 'Неверный пароль, проверьте правильность введенных данных';
       isNegative = true;
       print('Ошибка при вводе почты');
     }
     setState(() {});
+  }
+
+  void _forgottenPassword() {
+    print('Забыли пароль?');
   }
 
   @override
@@ -146,7 +172,7 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextField(
-          controller: _loginTextController,
+          controller: _passwordTextController,
           style: const TextStyle(
             fontSize: 16,
           ),
@@ -170,17 +196,16 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
             ),
           ),
         ],
-        const SizedBox(
-          height: 20,
-        ),
-        OutlinedButton(
-          onPressed: _login,
-          style: AppButtonStyle.blueStyleButton,
+        // const SizedBox(
+        //   height: 4,
+        // ),
+        TextButton(
+          onPressed: _forgottenPassword,
+          style: AppButtonStyle.linkStyleButton,
           child: const Text(
             'Забыли или не установили пароль?',
             style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
           ),

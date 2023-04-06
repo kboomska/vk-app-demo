@@ -46,4 +46,21 @@ abstract class AppButtonStyle {
     ),
     side: const MaterialStatePropertyAll(BorderSide.none),
   );
+
+  static const ButtonStyle linkStyleButton = ButtonStyle(
+    backgroundColor: MaterialStatePropertyAll(
+      Colors.white,
+    ),
+    foregroundColor: MaterialStatePropertyAll(
+      AppColors.linkBlue,
+    ),
+    overlayColor: MaterialStatePropertyAll(
+      Colors.white,
+    ),
+    splashFactory: NoSplash.splashFactory,
+    visualDensity: VisualDensity.compact,
+    padding: MaterialStatePropertyAll(
+      EdgeInsets.zero,
+    ),
+  );
 }

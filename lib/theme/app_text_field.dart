@@ -7,7 +7,7 @@ abstract class AppTextField {
     return InputDecoration(
       hintText: hintText,
       hintStyle: const TextStyle(
-        color: AppColors.textFieldBorder,
+        color: AppColors.textFieldHint,
         fontSize: 16,
       ),
       filled: true,
