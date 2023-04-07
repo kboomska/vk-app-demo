@@ -23,7 +23,6 @@ class _PasswordWidgetState extends State<PasswordWidget> {
         elevation: 0.0,
         title: IconID.small,
       ),
-      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.appBackgroundColor,
       body: _HeaderOfPasswordWidget(),
     );
@@ -45,9 +44,6 @@ class _HeaderOfPasswordWidget extends StatelessWidget {
       child: OverflowBox(
         child: Column(
           children: [
-            // const SizedBox(
-            //   height: 20,
-            // ),
             const Text(
               'Введите пароль',
               style: TextStyle(
@@ -72,7 +68,7 @@ class _HeaderOfPasswordWidget extends StatelessWidget {
             FittedBox(
               child: Text(
                 login,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black,
                 ),
@@ -112,8 +108,8 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
       errorText = null;
       isNegative = false;
 
-      print('Продолжить');
-      // Navigator.of(context).pushNamed('/password');
+      // print('Продолжить');
+      Navigator.of(context).pushReplacementNamed('/main_screen');
     } else {
       errorText = 'Неверный пароль, проверьте правильность введенных данных';
       isNegative = true;
@@ -158,12 +154,12 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
           ),
         ),
         if (errorText != null) ...[
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Text(
             errorText,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 14,
               color: Colors.red,
             ),

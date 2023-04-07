@@ -18,7 +18,6 @@ class _AuthWidgetState extends State<AuthWidget> {
       appBar: AppBar(
         backgroundColor: AppColors.appBackgroundColor,
         iconTheme: const IconThemeData(color: AppColors.iconBlue),
-        centerTitle: true,
         elevation: 0.0,
       ),
       resizeToAvoidBottomInset: false,
@@ -141,12 +140,12 @@ class __FormWidgetState extends State<_FormWidget> {
           keyboardType: TextInputType.emailAddress,
         ),
         if (errorText != null) ...[
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Text(
             errorText,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 14,
               color: Colors.red,
             ),

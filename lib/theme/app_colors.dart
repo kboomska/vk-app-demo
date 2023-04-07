@@ -17,4 +17,8 @@ abstract class AppColors {
   static const textFieldHint = Color.fromRGBO(131, 139, 151, 1);
   static const textFieldFillNegative = Color.fromRGBO(240, 226, 228, 1);
   static const textFieldBorderNegative = Color.fromRGBO(230, 70, 70, 1);
+
+  static const bottomNavigationBackground = Color.fromRGBO(247, 249, 250, 1);
+  static const bottomNavigationInactive = Color.fromRGBO(154, 162, 172, 1);
+  static const bottomNavigationActive = Color.fromRGBO(63, 115, 198, 1);
 }
