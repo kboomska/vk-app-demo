@@ -33,93 +33,82 @@ class _HeaderOfPasswordWidget extends StatelessWidget {
         horizontal: 16,
         vertical: 48,
       ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 20,
-                width: 20,
-                decoration: BoxDecoration(
-                  color: AppColors.logoBlue,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: const Center(
-                  child: Text(
-                    'VK',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w900,
+      child: OverflowBox(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 20,
+                  width: 20,
+                  decoration: BoxDecoration(
+                    color: AppColors.logoBlue,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'VK',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                width: 4,
-              ),
-              const Text(
-                'ID',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
+                const SizedBox(
+                  width: 4,
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            'Введите пароль',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
+                const Text(
+                  'ID',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Text(
-            'Укажите пароль, привязанный к почте',
-            style: TextStyle(
-              fontSize: 16,
-              color: AppColors.textFieldHint,
+            const SizedBox(
+              height: 20,
             ),
-          ),
-          const SizedBox(
-            height: 4,
-          ),
-          Text(
-            'login@mail.ru.login@mail.ru',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black,
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          _FormOfPasswordWidget(),
-          const Spacer(),
-          OutlinedButton(
-            onPressed: () {
-              print('Продолжить');
-            },
-            style: AppButtonStyle.blueStyleButton,
-            child: const Text(
-              'Продолжить',
+            const Text(
+              'Введите пароль',
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
+                color: Colors.black,
+                fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),
             ),
-          ),
-        ],
+            const SizedBox(
+              height: 10,
+            ),
+            const Text(
+              'Укажите пароль, привязанный к почте',
+              style: TextStyle(
+                fontSize: 16,
+                color: AppColors.textFieldHint,
+              ),
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            Text(
+              'login@mail.ru.login@mail.ru',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Expanded(
+              child: _FormOfPasswordWidget(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -137,6 +126,7 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
 
   String? errorText = null;
   bool isNegative = false;
+  bool isContinue = false;
 
   void _password() {
     final password = _passwordTextController.text;
@@ -148,13 +138,13 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
       print('Продолжить');
       // Navigator.of(context).pushNamed('/password');
     } else if (password == '') {
-      errorText = 'Не указана почта';
+      errorText = 'Не введен пароль';
       isNegative = true;
-      print('Пустое поле ввода');
+      print('Пустое поле ввода пароля');
     } else {
       errorText = 'Неверный пароль, проверьте правильность введенных данных';
       isNegative = true;
-      print('Ошибка при вводе почты');
+      print('Ошибка при вводе пароля');
     }
     setState(() {});
   }
@@ -168,6 +158,15 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
     final errorText = this.errorText;
     final isNegative = this.isNegative;
 
+    void textFieldChanged(String text) {
+      if (text == '') {
+        isContinue = false;
+      } else {
+        isContinue = true;
+      }
+      setState(() {});
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -179,6 +178,7 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
           cursorColor: AppColors.logoBlue,
           cursorHeight: 20,
           obscureText: true,
+          onChanged: (text) => textFieldChanged(text),
           decoration: AppTextField.inputDecoration(
             hintText: 'Введите пароль',
             isNegative: isNegative,
@@ -196,9 +196,6 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
             ),
           ),
         ],
-        // const SizedBox(
-        //   height: 4,
-        // ),
         TextButton(
           onPressed: _forgottenPassword,
           style: AppButtonStyle.linkStyleButton,
@@ -206,6 +203,21 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
             'Забыли или не установили пароль?',
             style: TextStyle(
               fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        const Spacer(),
+        OutlinedButton(
+          onPressed: isContinue ? _password : null,
+          style: AppButtonStyle.blueStyleDeactivableButton(
+            isActive: isContinue,
+          ),
+          child: const Text(
+            'Продолжить',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
               fontWeight: FontWeight.w500,
             ),
           ),

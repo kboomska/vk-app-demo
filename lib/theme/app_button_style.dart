@@ -63,4 +63,28 @@ abstract class AppButtonStyle {
       EdgeInsets.zero,
     ),
   );
+
+  static ButtonStyle blueStyleDeactivableButton({bool isActive = true}) {
+    return ButtonStyle(
+      backgroundColor: MaterialStatePropertyAll(
+        isActive ? AppColors.buttonBlue : AppColors.buttonBlueInactive,
+      ),
+      foregroundColor: const MaterialStatePropertyAll(
+        Colors.white,
+      ),
+      overlayColor: const MaterialStatePropertyAll(
+        AppColors.buttonPressed,
+      ),
+      splashFactory: NoSplash.splashFactory,
+      minimumSize: const MaterialStatePropertyAll(
+        Size.fromHeight(44),
+      ),
+      shape: MaterialStatePropertyAll(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      side: const MaterialStatePropertyAll(BorderSide.none),
+    );
+  }
 }
