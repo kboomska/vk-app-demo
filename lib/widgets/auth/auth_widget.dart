@@ -15,8 +15,14 @@ class _AuthWidgetState extends State<AuthWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.appBackgroundColor,
+        iconTheme: const IconThemeData(color: AppColors.iconBlue),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.appBackgroundColor,
       body: _HeaderWidget(),
     );
   }
@@ -30,62 +36,51 @@ class _HeaderWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
-        vertical: 48,
+        vertical: 16,
       ),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 100,
-          ),
-          Container(
-            height: 60,
-            width: 60,
-            decoration: BoxDecoration(
-              color: AppColors.logoBlue,
-              borderRadius: BorderRadius.circular(14),
+      child: OverflowBox(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 52,
             ),
-            child: const Center(
-              child: Text(
-                'VK',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w900,
+            Container(
+              height: 56,
+              width: 56,
+              decoration: BoxDecoration(
+                color: AppColors.logoBlue,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: const Center(
+                child: Text(
+                  'VK',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            'Вход ВКонтакте',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
+            const SizedBox(
+              height: 16,
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          _FormWidget(),
-          const Spacer(),
-          OutlinedButton(
-            onPressed: () {
-              print('Зарегистрироваться');
-            },
-            style: AppButtonStyle.greenStyleButton,
-            child: const Text(
-              'Зарегистрироваться',
+            const Text(
+              'Вход ВКонтакте',
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
+                color: Colors.black,
+                fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),
             ),
-          ),
-        ],
+            const SizedBox(
+              height: 20,
+            ),
+            Expanded(
+              child: _FormWidget(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -99,7 +94,7 @@ class _FormWidget extends StatefulWidget {
 }
 
 class __FormWidgetState extends State<_FormWidget> {
-  final _loginTextController = TextEditingController(text: 'admin');
+  final _loginTextController = TextEditingController(text: 'admin@mail.ru');
 
   String? errorText = null;
   bool isNegative = false;
@@ -107,7 +102,7 @@ class __FormWidgetState extends State<_FormWidget> {
   void _login() {
     final login = _loginTextController.text;
 
-    if (login == 'admin') {
+    if (login == 'admin@mail.ru') {
       errorText = null;
       isNegative = false;
 
@@ -143,6 +138,7 @@ class __FormWidgetState extends State<_FormWidget> {
             hintText: 'Введите почту',
             isNegative: isNegative,
           ),
+          keyboardType: TextInputType.emailAddress,
         ),
         if (errorText != null) ...[
           SizedBox(
@@ -164,6 +160,21 @@ class __FormWidgetState extends State<_FormWidget> {
           style: AppButtonStyle.blueStyleButton,
           child: const Text(
             'Войти',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        const Spacer(),
+        OutlinedButton(
+          onPressed: () {
+            print('Зарегистрироваться');
+          },
+          style: AppButtonStyle.greenStyleButton,
+          child: const Text(
+            'Зарегистрироваться',
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '/theme/app_button_style.dart';
 import '/theme/app_text_field.dart';
 import '/theme/app_colors.dart';
+import '/theme/icon_id.dart';
 
 class PasswordWidget extends StatefulWidget {
   const PasswordWidget({super.key});
@@ -15,9 +16,15 @@ class _PasswordWidgetState extends State<PasswordWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: AppColors.appBackgroundColor,
+        iconTheme: const IconThemeData(color: AppColors.iconBlue),
+        centerTitle: true,
+        elevation: 0.0,
+        title: IconID.small,
+      ),
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.appBackgroundColor,
       body: _HeaderOfPasswordWidget(),
     );
   }
@@ -28,51 +35,19 @@ class _HeaderOfPasswordWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String login = ModalRoute.of(context)!.settings.arguments as String;
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
-        vertical: 48,
+        vertical: 16,
       ),
       child: OverflowBox(
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 20,
-                  width: 20,
-                  decoration: BoxDecoration(
-                    color: AppColors.logoBlue,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'VK',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 4,
-                ),
-                const Text(
-                  'ID',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
             const Text(
               'Введите пароль',
               style: TextStyle(
@@ -94,11 +69,13 @@ class _HeaderOfPasswordWidget extends StatelessWidget {
             const SizedBox(
               height: 4,
             ),
-            Text(
-              'login@mail.ru.login@mail.ru',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black,
+            FittedBox(
+              child: Text(
+                login,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
               ),
             ),
             const SizedBox(
@@ -137,10 +114,6 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
 
       print('Продолжить');
       // Navigator.of(context).pushNamed('/password');
-    } else if (password == '') {
-      errorText = 'Не введен пароль';
-      isNegative = true;
-      print('Пустое поле ввода пароля');
     } else {
       errorText = 'Неверный пароль, проверьте правильность введенных данных';
       isNegative = true;

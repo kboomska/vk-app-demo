@@ -49,13 +49,13 @@ abstract class AppButtonStyle {
 
   static const ButtonStyle linkStyleButton = ButtonStyle(
     backgroundColor: MaterialStatePropertyAll(
-      Colors.white,
+      AppColors.appBackgroundColor,
     ),
     foregroundColor: MaterialStatePropertyAll(
       AppColors.linkBlue,
     ),
     overlayColor: MaterialStatePropertyAll(
-      Colors.white,
+      AppColors.appBackgroundColor,
     ),
     splashFactory: NoSplash.splashFactory,
     visualDensity: VisualDensity.compact,
@@ -70,7 +70,7 @@ abstract class AppButtonStyle {
         isActive ? AppColors.buttonBlue : AppColors.buttonBlueInactive,
       ),
       foregroundColor: const MaterialStatePropertyAll(
-        Colors.white,
+        AppColors.appBackgroundColor,
       ),
       overlayColor: const MaterialStatePropertyAll(
         AppColors.buttonPressed,
