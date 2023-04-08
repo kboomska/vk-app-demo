@@ -95,33 +95,38 @@ class _FormWidget extends StatefulWidget {
 class __FormWidgetState extends State<_FormWidget> {
   final _loginTextController = TextEditingController(text: 'admin@mail.ru');
 
-  String? errorText = null;
-  bool isNegative = false;
+  String? errorText;
+  bool isError = false;
 
   void _login() {
     final login = _loginTextController.text;
 
     if (login == 'admin@mail.ru') {
       errorText = null;
-      isNegative = false;
+      isError = false;
 
       Navigator.of(context).pushNamed('/password', arguments: login);
     } else if (login == '') {
       errorText = 'Не указана почта';
-      isNegative = true;
+      isError = true;
       print('Пустое поле ввода');
     } else {
       errorText = 'Неверный адрес почты';
-      isNegative = true;
+      isError = true;
       print('Ошибка при вводе почты');
     }
+    setState(() {});
+  }
+
+  void textFieldCheckError(String text) {
+    isError = false;
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final errorText = this.errorText;
-    final isNegative = this.isNegative;
+    bool isError = this.isError;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,13 +138,14 @@ class __FormWidgetState extends State<_FormWidget> {
           ),
           cursorColor: AppColors.logoBlue,
           cursorHeight: 20,
+          onChanged: (text) => textFieldCheckError(text),
           decoration: AppTextField.inputDecoration(
             hintText: 'Введите почту',
-            isNegative: isNegative,
+            isError: isError,
           ),
           keyboardType: TextInputType.emailAddress,
         ),
-        if (errorText != null) ...[
+        if (errorText != null && isError) ...[
           const SizedBox(
             height: 8,
           ),
@@ -147,7 +153,7 @@ class __FormWidgetState extends State<_FormWidget> {
             errorText,
             style: const TextStyle(
               fontSize: 14,
-              color: Colors.red,
+              color: AppColors.textFieldErrorText,
             ),
           ),
         ],

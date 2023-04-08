@@ -97,8 +97,8 @@ class _FormOfPasswordWidget extends StatefulWidget {
 class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
   final _passwordTextController = TextEditingController();
 
-  String? errorText = null;
-  bool isNegative = false;
+  String? errorText;
+  bool isError = false;
   bool isContinue = false;
 
   void _password() {
@@ -106,14 +106,14 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
 
     if (password == 'admin') {
       errorText = null;
-      isNegative = false;
+      isError = false;
 
       // Navigator.of(context).pushReplacementNamed('/main_screen');
       Navigator.of(context).pushNamedAndRemoveUntil(
           '/main_screen', ModalRoute.withName('/auth'));
     } else {
       errorText = 'Неверный пароль, проверьте правильность введенных данных';
-      isNegative = true;
+      isError = true;
       print('Ошибка при вводе пароля');
     }
     setState(() {});
@@ -123,38 +123,44 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
     print('Забыли пароль?');
   }
 
+  void textFieldCheckError(String text) {
+    isError = false;
+    errorText = null;
+
+    if (text == '') {
+      isContinue = false;
+    } else {
+      isContinue = true;
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final errorText = this.errorText;
-    final isNegative = this.isNegative;
-
-    void textFieldChanged(String text) {
-      if (text == '') {
-        isContinue = false;
-      } else {
-        isContinue = true;
-      }
-      setState(() {});
-    }
+    final isError = this.isError;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextField(
-          controller: _passwordTextController,
-          style: const TextStyle(
-            fontSize: 16,
-          ),
-          cursorColor: AppColors.logoBlue,
-          cursorHeight: 20,
-          obscureText: true,
-          onChanged: (text) => textFieldChanged(text),
-          decoration: AppTextField.inputDecoration(
-            hintText: 'Введите пароль',
-            isNegative: isNegative,
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: TextField(
+            controller: _passwordTextController,
+            style: const TextStyle(
+              fontSize: 16,
+            ),
+            cursorColor: AppColors.logoBlue,
+            cursorHeight: 20,
+            obscureText: true,
+            onChanged: (text) => textFieldCheckError(text),
+            decoration: AppTextField.inputDecoration(
+              hintText: 'Введите пароль',
+              isError: isError,
+            ),
           ),
         ),
-        if (errorText != null) ...[
+        if (errorText != null && isError) ...[
           const SizedBox(
             height: 8,
           ),
@@ -162,7 +168,7 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
             errorText,
             style: const TextStyle(
               fontSize: 14,
-              color: Colors.red,
+              color: AppColors.textFieldErrorText,
             ),
           ),
         ],
