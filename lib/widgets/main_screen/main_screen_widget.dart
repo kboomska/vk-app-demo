@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vk_app/theme/app_colors.dart';
+
+import '/theme/app_colors.dart';
 
 class MainScreenWidget extends StatefulWidget {
   const MainScreenWidget({super.key});
@@ -31,7 +32,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         backgroundColor: AppColors.appBackgroundColor,
         iconTheme: const IconThemeData(color: AppColors.iconBlue),
         elevation: 0.0,
-        // title: _widgetOptions[_selectedTab],
         title: Text(
           _appBarOptions[_selectedTab],
           style: const TextStyle(
@@ -67,6 +67,14 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
       ),
       body: Center(
         child: Text(_appBarOptions[_selectedTab]),
+        //   child: Center(
+        //     child: OutlinedButton(
+        //       onPressed: () {
+        //         Navigator.of(context).pop();
+        //       },
+        //       child: Text('Go back?'),
+        //     ),
+        //   ),
       ),
     );
   }
