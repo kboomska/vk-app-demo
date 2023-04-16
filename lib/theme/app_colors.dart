@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 abstract class AppColors {
   static const appBackgroundColor = Colors.white;
+  static const mainBackgroundColor = Color.fromRGBO(235, 237, 240, 1);
+  static const mainAppBarShadowColor = Color.fromRGBO(215, 216, 216, 1);
 
   static const buttonBlue = Color.fromRGBO(38, 136, 235, 1);
   static const buttonGreen = Color.fromRGBO(75, 179, 75, 1);
@@ -26,4 +28,11 @@ abstract class AppColors {
   static const bottomNavigationBackground = Color.fromRGBO(247, 249, 250, 1);
   static const bottomNavigationInactive = Color.fromRGBO(154, 162, 172, 1);
   static const bottomNavigationActive = Color.fromRGBO(63, 115, 198, 1);
+
+  static const postAuthor = Color.fromRGBO(44, 45, 46, 1);
+  static const postDate = Color.fromRGBO(129, 140, 153, 1);
+  static const postText = Color.fromRGBO(0, 0, 0, 1);
+  static const postActions = Color.fromRGBO(185, 193, 203, 1);
+  static const postBottomButtonsBackground = Color.fromRGBO(245, 245, 245, 1);
+  static const postBottomButtons = Color.fromRGBO(154, 162, 172, 1);
 }

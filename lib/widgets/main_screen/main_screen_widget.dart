@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/widgets/post_list/post_list_widget.dart';
 import '/theme/app_colors.dart';
 
 class MainScreenWidget extends StatefulWidget {
@@ -18,6 +19,12 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     'Настройки',
   ];
 
+  static final List<Widget> _mainScreenOptions = [
+    PostListWidget(),
+    Text(_appBarOptions[1]),
+    Text(_appBarOptions[2]),
+  ];
+
   void onSelectTab(int index) {
     if (_selectedTab == index) return;
     setState(() {
@@ -31,7 +38,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
       appBar: AppBar(
         backgroundColor: AppColors.appBackgroundColor,
         iconTheme: const IconThemeData(color: AppColors.iconBlue),
-        elevation: 0.0,
+        elevation: 1,
+        shadowColor: AppColors.mainAppBarShadowColor,
         title: Text(
           _appBarOptions[_selectedTab],
           style: const TextStyle(
@@ -49,32 +57,24 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         unselectedItemColor: AppColors.bottomNavigationInactive,
         selectedFontSize: 12,
         elevation: 0.0,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
-            label: 'Главная',
+            icon: const Icon(Icons.home_rounded),
+            label: _appBarOptions[0],
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble_rounded),
-            label: 'Сообщения',
+            icon: const Icon(Icons.chat_bubble_rounded),
+            label: _appBarOptions[1],
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.build_rounded),
-            label: 'Настройки',
+            icon: const Icon(Icons.build_rounded),
+            label: _appBarOptions[2],
           ),
         ],
         onTap: onSelectTab,
       ),
       body: Center(
-        child: Text(_appBarOptions[_selectedTab]),
-        //   child: Center(
-        //     child: OutlinedButton(
-        //       onPressed: () {
-        //         Navigator.of(context).pop();
-        //       },
-        //       child: Text('Go back?'),
-        //     ),
-        //   ),
+        child: _mainScreenOptions[_selectedTab],
       ),
     );
   }
