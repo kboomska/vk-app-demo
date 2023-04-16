@@ -95,11 +95,19 @@ class _FormOfPasswordWidget extends StatefulWidget {
 }
 
 class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
-  final _passwordTextController = TextEditingController();
+  final _passwordTextController = TextEditingController(text: 'admin');
 
   String? errorText;
   bool isError = false;
   bool isContinue = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (_passwordTextController.text != '') {
+      isContinue = true;
+    }
+  }
 
   void _password() {
     final password = _passwordTextController.text;

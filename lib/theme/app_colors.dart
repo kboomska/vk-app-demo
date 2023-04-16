@@ -35,4 +35,7 @@ abstract class AppColors {
   static const postActions = Color.fromRGBO(185, 193, 203, 1);
   static const postBottomButtonsBackground = Color.fromRGBO(245, 245, 245, 1);
   static const postBottomButtons = Color.fromRGBO(154, 162, 172, 1);
+  static const postBottomViews = Color.fromRGBO(185, 193, 203, 1);
+  static const postLikedButton = Color.fromRGBO(225, 65, 71, 1);
+  static const postLikedButtonBackground = Color.fromRGBO(251, 237, 237, 1);
 }

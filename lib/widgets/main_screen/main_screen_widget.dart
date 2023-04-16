@@ -19,12 +19,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     'Настройки',
   ];
 
-  static final List<Widget> _mainScreenOptions = [
-    PostListWidget(),
-    Text(_appBarOptions[1]),
-    Text(_appBarOptions[2]),
-  ];
-
   void onSelectTab(int index) {
     if (_selectedTab == index) return;
     setState(() {
@@ -73,8 +67,13 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         ],
         onTap: onSelectTab,
       ),
-      body: Center(
-        child: _mainScreenOptions[_selectedTab],
+      body: IndexedStack(
+        index: _selectedTab,
+        children: [
+          PostListWidget(),
+          Center(child: Text(_appBarOptions[1])),
+          Center(child: Text(_appBarOptions[2])),
+        ],
       ),
     );
   }
