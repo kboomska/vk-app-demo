@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 abstract class AppTextField {
-  static inputDecoration({bool isError = false, String? hintText}) {
+  static inputDecoration(
+      {bool isError = false, String? hintText, Widget? suffixIcon}) {
     return InputDecoration(
       hintText: hintText,
       hintStyle: const TextStyle(
@@ -36,6 +37,10 @@ abstract class AppTextField {
       contentPadding: const EdgeInsets.symmetric(
         horizontal: 12.5,
         vertical: 12.5,
+      ),
+      suffixIcon: suffixIcon,
+      suffixIconConstraints: BoxConstraints.tight(
+        const Size(44, 44),
       ),
     );
   }

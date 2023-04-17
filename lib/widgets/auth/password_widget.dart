@@ -24,7 +24,7 @@ class _PasswordWidgetState extends State<PasswordWidget> {
         title: IconID.small,
       ),
       backgroundColor: AppColors.appBackgroundColor,
-      body: _HeaderOfPasswordWidget(),
+      body: const _HeaderOfPasswordWidget(),
     );
   }
 }
@@ -41,47 +41,43 @@ class _HeaderOfPasswordWidget extends StatelessWidget {
         horizontal: 16,
         vertical: 16,
       ),
-      child: OverflowBox(
-        child: Column(
-          children: [
-            const Text(
-              'Введите пароль',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
+      child: Column(
+        children: [
+          const Text(
+            'Введите пароль',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
             ),
-            const SizedBox(
-              height: 10,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Text(
+            'Укажите пароль, привязанный к почте',
+            style: TextStyle(
+              fontSize: 16,
+              color: AppColors.textFieldHint,
             ),
-            const Text(
-              'Укажите пароль, привязанный к почте',
-              style: TextStyle(
+          ),
+          const SizedBox(
+            height: 4,
+          ),
+          FittedBox(
+            child: Text(
+              login,
+              style: const TextStyle(
                 fontSize: 16,
-                color: AppColors.textFieldHint,
+                color: Colors.black,
               ),
             ),
-            const SizedBox(
-              height: 4,
-            ),
-            FittedBox(
-              child: Text(
-                login,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Expanded(
-              child: _FormOfPasswordWidget(),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const _FormOfPasswordWidget(),
+        ],
       ),
     );
   }
@@ -148,65 +144,67 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
     final errorText = this.errorText;
     final isError = this.isError;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Directionality(
-          textDirection: TextDirection.ltr,
-          child: TextField(
-            controller: _passwordTextController,
-            style: const TextStyle(
-              fontSize: 16,
-            ),
-            cursorColor: AppColors.logoBlue,
-            cursorHeight: 20,
-            obscureText: true,
-            onChanged: (text) => textFieldCheckError(text),
-            decoration: AppTextField.inputDecoration(
-              hintText: 'Введите пароль',
-              isError: isError,
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: TextField(
+              controller: _passwordTextController,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+              cursorColor: AppColors.logoBlue,
+              cursorHeight: 20,
+              obscureText: true,
+              onChanged: (text) => textFieldCheckError(text),
+              decoration: AppTextField.inputDecoration(
+                hintText: 'Введите пароль',
+                isError: isError,
+              ),
             ),
           ),
-        ),
-        if (errorText != null && isError) ...[
-          const SizedBox(
-            height: 8,
+          if (errorText != null && isError) ...[
+            const SizedBox(
+              height: 8,
+            ),
+            Text(
+              errorText,
+              style: const TextStyle(
+                fontSize: 14,
+                color: AppColors.textFieldErrorText,
+              ),
+            ),
+          ],
+          TextButton(
+            onPressed: _forgottenPassword,
+            style: AppButtonStyle.linkStyleButton,
+            child: const Text(
+              'Забыли или не установили пароль?',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
-          Text(
-            errorText,
-            style: const TextStyle(
-              fontSize: 14,
-              color: AppColors.textFieldErrorText,
+          const Spacer(),
+          OutlinedButton(
+            onPressed: isContinue ? _password : null,
+            style: AppButtonStyle.blueStyleDeactivableButton(
+              isActive: isContinue,
+            ),
+            child: const Text(
+              'Продолжить',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],
-        TextButton(
-          onPressed: _forgottenPassword,
-          style: AppButtonStyle.linkStyleButton,
-          child: const Text(
-            'Забыли или не установили пароль?',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        const Spacer(),
-        OutlinedButton(
-          onPressed: isContinue ? _password : null,
-          style: AppButtonStyle.blueStyleDeactivableButton(
-            isActive: isContinue,
-          ),
-          child: const Text(
-            'Продолжить',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

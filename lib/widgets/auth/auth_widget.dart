@@ -22,7 +22,7 @@ class _AuthWidgetState extends State<AuthWidget> {
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.appBackgroundColor,
-      body: _HeaderWidget(),
+      body: const _HeaderWidget(),
     );
   }
 }
@@ -37,49 +37,45 @@ class _HeaderWidget extends StatelessWidget {
         horizontal: 16,
         vertical: 16,
       ),
-      child: OverflowBox(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 52,
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 52,
+          ),
+          Container(
+            height: 56,
+            width: 56,
+            decoration: BoxDecoration(
+              color: AppColors.logoBlue,
+              borderRadius: BorderRadius.circular(15),
             ),
-            Container(
-              height: 56,
-              width: 56,
-              decoration: BoxDecoration(
-                color: AppColors.logoBlue,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: const Center(
-                child: Text(
-                  'VK',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.w900,
-                  ),
+            child: const Center(
+              child: Text(
+                'VK',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w900,
                 ),
               ),
             ),
-            const SizedBox(
-              height: 16,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          const Text(
+            'Вход ВКонтакте',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
             ),
-            const Text(
-              'Вход ВКонтакте',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Expanded(
-              child: _FormWidget(),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const _FormWidget(),
+        ],
       ),
     );
   }
@@ -128,66 +124,81 @@ class __FormWidgetState extends State<_FormWidget> {
     final errorText = this.errorText;
     bool isError = this.isError;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TextField(
-          controller: _loginTextController,
-          style: const TextStyle(
-            fontSize: 16,
-          ),
-          cursorColor: AppColors.logoBlue,
-          cursorHeight: 20,
-          onChanged: (text) => textFieldCheckError(text),
-          decoration: AppTextField.inputDecoration(
-            hintText: 'Введите почту',
-            isError: isError,
-          ),
-          keyboardType: TextInputType.emailAddress,
-        ),
-        if (errorText != null && isError) ...[
-          const SizedBox(
-            height: 8,
-          ),
-          Text(
-            errorText,
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextField(
+            controller: _loginTextController,
             style: const TextStyle(
-              fontSize: 14,
-              color: AppColors.textFieldErrorText,
+              fontSize: 16,
+            ),
+            cursorColor: AppColors.logoBlue,
+            cursorHeight: 20,
+            onChanged: (text) => textFieldCheckError(text),
+            decoration: AppTextField.inputDecoration(
+              hintText: 'Введите почту',
+              isError: isError,
+              suffixIcon: _loginTextController.text == ''
+                  ? null
+                  : InkWell(
+                      onTap: () {
+                        _loginTextController.text = '';
+                        setState(() {});
+                      },
+                      child: const Icon(
+                        Icons.highlight_off,
+                        color: AppColors.textFieldHint,
+                        size: 16,
+                      ),
+                    ),
+            ),
+            keyboardType: TextInputType.emailAddress,
+          ),
+          if (errorText != null && isError) ...[
+            const SizedBox(
+              height: 8,
+            ),
+            Text(
+              errorText,
+              style: const TextStyle(
+                fontSize: 14,
+                color: AppColors.textFieldErrorText,
+              ),
+            ),
+          ],
+          const SizedBox(
+            height: 20,
+          ),
+          OutlinedButton(
+            onPressed: _login,
+            style: AppButtonStyle.blueStyleButton,
+            child: const Text(
+              'Войти',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          const Spacer(),
+          OutlinedButton(
+            onPressed: () {
+              print('Зарегистрироваться');
+            },
+            style: AppButtonStyle.greenStyleButton,
+            child: const Text(
+              'Зарегистрироваться',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],
-        const SizedBox(
-          height: 20,
-        ),
-        OutlinedButton(
-          onPressed: _login,
-          style: AppButtonStyle.blueStyleButton,
-          child: const Text(
-            'Войти',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        const Spacer(),
-        OutlinedButton(
-          onPressed: () {
-            print('Зарегистрироваться');
-          },
-          style: AppButtonStyle.greenStyleButton,
-          child: const Text(
-            'Зарегистрироваться',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

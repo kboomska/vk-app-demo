@@ -337,7 +337,7 @@ class _PostCardState extends State<PostCard> {
                   Row(
                     children: [
                       const Icon(
-                        Icons.remove_red_eye,
+                        Icons.visibility,
                         color: AppColors.postBottomViews,
                         size: 16,
                         textDirection: TextDirection.rtl,
@@ -367,9 +367,9 @@ class _PostCardState extends State<PostCard> {
 
 class PostLikeButton extends StatelessWidget {
   final int buttonCounter;
-  bool isLiked;
+  final bool isLiked;
 
-  PostLikeButton({
+  const PostLikeButton({
     super.key,
     required this.buttonCounter,
     required this.isLiked,
