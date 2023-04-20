@@ -215,7 +215,7 @@ class _PostCardState extends State<PostCard> {
     print('PostCard build');
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Container(
+      child: DecoratedBox(
         decoration: BoxDecoration(
           color: AppColors.appBackgroundColor,
           borderRadius: BorderRadius.circular(16.0),
@@ -225,144 +225,220 @@ class _PostCardState extends State<PostCard> {
           isLiked: widget.post.isLiked,
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Image.asset(
-                        widget.post.avatar,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          widget.post.author,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.postAuthor,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          widget.post.date,
-                          style: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.postDate,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () {
-                        print('Post actions');
-                      },
-                      iconSize: 24,
-                      constraints: BoxConstraints.tight(const Size(40, 40)),
-                      icon: const Icon(
-                        Icons.more_horiz,
-                        color: AppColors.postActions,
-                      ),
-                    ),
-                  ],
-                ),
+              PostHeader(
+                avatar: widget.post.avatar,
+                author: widget.post.author,
+                date: widget.post.date,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8, left: 12, right: 12),
-                child: Text(
-                  widget.post.text,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.postAuthor,
-                  ),
-                ),
+              PostText(text: widget.post.text),
+              PostMedia(media: widget.post.media),
+              PostFooter(
+                onTap: _onTablikebutton,
+                replies: widget.post.replies,
+                share: widget.post.share,
+                views: widget.post.views,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 12, bottom: 12),
-                child: Image.asset(
-                  widget.post.media,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
-                child: Row(
-                  children: [
-                    Material(
-                      borderRadius: BorderRadius.circular(16),
-                      child: InkWell(
-                        onTap: _onTablikebutton,
-                        borderRadius: BorderRadius.circular(16),
-                        child: const PostLikeButton(),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    PostBottomButton(
-                      buttonCounter: widget.post.replies,
-                      buttonIcon: const Icon(
-                        Icons.messenger_outline_outlined,
-                        color: AppColors.postBottomButtons,
-                        size: 24,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    PostBottomButton(
-                      buttonCounter: widget.post.share,
-                      buttonIcon: const Icon(
-                        Icons.reply_rounded,
-                        color: AppColors.postBottomButtons,
-                        size: 24,
-                        textDirection: TextDirection.rtl,
-                      ),
-                    ),
-                    const Spacer(),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.visibility,
-                          color: AppColors.postBottomViews,
-                          size: 16,
-                          textDirection: TextDirection.rtl,
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          widget.post.views,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.postBottomViews,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              )
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class PostHeader extends StatelessWidget {
+  final String avatar;
+  final String author;
+  final String date;
+
+  const PostHeader({
+    super.key,
+    required this.avatar,
+    required this.author,
+    required this.date,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    print('PostHeader build');
+    return Padding(
+      padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Image.asset(
+              avatar,
+            ),
+          ),
+          const SizedBox(
+            width: 8,
+          ),
+          Column(
+            children: [
+              Text(
+                author,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.postAuthor,
+                ),
+              ),
+              const SizedBox(
+                height: 3,
+              ),
+              Text(
+                date,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.postDate,
+                ),
+              ),
+            ],
+          ),
+          const Spacer(),
+          IconButton(
+            onPressed: () {
+              print('Post actions');
+            },
+            iconSize: 24,
+            constraints: BoxConstraints.tight(const Size(40, 40)),
+            icon: const Icon(
+              Icons.more_horiz,
+              color: AppColors.postActions,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PostText extends StatelessWidget {
+  final String text;
+
+  const PostText({
+    super.key,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    print('PostText build');
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, left: 12, right: 12),
+      child: Text(
+        text,
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w400,
+          color: AppColors.postAuthor,
+        ),
+      ),
+    );
+  }
+}
+
+class PostMedia extends StatelessWidget {
+  final String media;
+
+  const PostMedia({super.key, required this.media});
+
+  @override
+  Widget build(BuildContext context) {
+    print('PostMedia build');
+    return Padding(
+      padding: const EdgeInsets.only(top: 12, bottom: 12),
+      child: Image.asset(
+        media,
+      ),
+    );
+  }
+}
+
+class PostFooter extends StatelessWidget {
+  final Function onTap;
+  final int replies;
+  final int share;
+  final String views;
+
+  const PostFooter({
+    super.key,
+    required this.onTap,
+    required this.replies,
+    required this.share,
+    required this.views,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    print('PostFooter build');
+    return Padding(
+      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+      child: Row(
+        children: [
+          Material(
+            borderRadius: BorderRadius.circular(16),
+            child: InkWell(
+              onTap: () => onTap(),
+              borderRadius: BorderRadius.circular(16),
+              child: const PostLikeButton(),
+            ),
+          ),
+          const SizedBox(
+            width: 8,
+          ),
+          PostBottomButton(
+            buttonCounter: replies,
+            buttonIcon: const Icon(
+              Icons.messenger_outline_outlined,
+              color: AppColors.postBottomButtons,
+              size: 24,
+            ),
+          ),
+          const SizedBox(
+            width: 8,
+          ),
+          PostBottomButton(
+            buttonCounter: share,
+            buttonIcon: const Icon(
+              Icons.reply_rounded,
+              color: AppColors.postBottomButtons,
+              size: 24,
+              textDirection: TextDirection.rtl,
+            ),
+          ),
+          const Spacer(),
+          Row(
+            children: [
+              const Icon(
+                Icons.visibility,
+                color: AppColors.postBottomViews,
+                size: 16,
+                textDirection: TextDirection.rtl,
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              Text(
+                views,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.postBottomViews,
+                ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
