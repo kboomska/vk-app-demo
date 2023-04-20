@@ -13,7 +13,7 @@ class Post {
   final int replies;
   final int share;
   final String views;
-  bool isLiked = false;
+  bool isLiked;
 
   Post({
     required this.author,
@@ -198,16 +198,13 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
-  void _onTablikebutton() {
-    widget.post.isLiked = !widget.post.isLiked;
-    if (widget.post.isLiked) {
-      widget.post.reactions += 1;
-    } else {
-      widget.post.reactions -= 1;
-    }
+  final _model = PostDataModel();
 
-    print('Do you like it: ${widget.post.isLiked}');
-    setState(() {});
+  @override
+  void initState() {
+    super.initState();
+    _model.reactions = widget.post.reactions;
+    _model.isLiked = widget.post.isLiked;
   }
 
   @override
@@ -220,9 +217,8 @@ class _PostCardState extends State<PostCard> {
           color: AppColors.appBackgroundColor,
           borderRadius: BorderRadius.circular(16.0),
         ),
-        child: PostDataProviderInherited(
-          reactions: widget.post.reactions,
-          isLiked: widget.post.isLiked,
+        child: PostDataProvider(
+          model: _model,
           child: Column(
             children: [
               PostHeader(
@@ -233,7 +229,6 @@ class _PostCardState extends State<PostCard> {
               PostText(text: widget.post.text),
               PostMedia(media: widget.post.media),
               PostFooter(
-                onTap: _onTablikebutton,
                 replies: widget.post.replies,
                 share: widget.post.share,
                 views: widget.post.views,
@@ -365,14 +360,12 @@ class PostMedia extends StatelessWidget {
 }
 
 class PostFooter extends StatelessWidget {
-  final Function onTap;
   final int replies;
   final int share;
   final String views;
 
   const PostFooter({
     super.key,
-    required this.onTap,
     required this.replies,
     required this.share,
     required this.views,
@@ -385,14 +378,7 @@ class PostFooter extends StatelessWidget {
       padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
       child: Row(
         children: [
-          Material(
-            borderRadius: BorderRadius.circular(16),
-            child: InkWell(
-              onTap: () => onTap(),
-              borderRadius: BorderRadius.circular(16),
-              child: const PostLikeButton(),
-            ),
-          ),
+          const PostLikeButton(),
           const SizedBox(
             width: 8,
           ),
@@ -451,49 +437,50 @@ class PostLikeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int buttonCounter = context
-            .dependOnInheritedWidgetOfExactType<PostDataProviderInherited>()
-            ?.reactions ??
-        0;
-    final bool isLiked = context
-            .dependOnInheritedWidgetOfExactType<PostDataProviderInherited>()
-            ?.isLiked ??
-        false;
+    final int buttonCounter = PostDataProvider.of(context)?.reactions ?? 0;
+    final bool isLiked = PostDataProvider.of(context)?.isLiked ?? false;
 
     print('PostLikeButton build');
-    return Container(
-      height: 32,
-      decoration: BoxDecoration(
-        color: isLiked
-            ? AppColors.postLikedButtonBackground
-            : AppColors.postBottomButtonsBackground,
+    return Material(
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: () => PostDataProvider.of(context)?.onTapLikeButton(),
         borderRadius: BorderRadius.circular(16),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Row(
-          children: [
-            Icon(
-              Icons.favorite_outline,
-              color: isLiked
-                  ? AppColors.postLikedButton
-                  : AppColors.postBottomButtons,
-              size: 24,
+        child: Container(
+          height: 32,
+          decoration: BoxDecoration(
+            color: isLiked
+                ? AppColors.postLikedButtonBackground
+                : AppColors.postBottomButtonsBackground,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.favorite_outline,
+                  color: isLiked
+                      ? AppColors.postLikedButton
+                      : AppColors.postBottomButtons,
+                  size: 24,
+                ),
+                const SizedBox(
+                  width: 4,
+                ),
+                Text(
+                  '$buttonCounter',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: isLiked
+                        ? AppColors.postLikedButton
+                        : AppColors.postBottomButtons,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(
-              width: 4,
-            ),
-            Text(
-              '$buttonCounter',
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                color: isLiked
-                    ? AppColors.postLikedButton
-                    : AppColors.postBottomButtons,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -542,19 +529,58 @@ class PostBottomButton extends StatelessWidget {
   }
 }
 
-class PostDataProviderInherited extends InheritedWidget {
-  final int reactions;
-  final bool isLiked;
+class PostDataModel extends ChangeNotifier {
+  int? _reactions;
+  int? replies;
+  int? share;
+  String? views;
+  bool? _isLiked;
 
-  const PostDataProviderInherited({
+  set reactions(int value) => _reactions = value;
+  set isLiked(bool value) => _isLiked = value;
+
+  int get reactions {
+    return _reactions ?? 0;
+  }
+
+  bool get isLiked {
+    return _isLiked ?? false;
+  }
+
+  void onTapLikeButton() {
+    if (_reactions != null && _isLiked != null) {
+      isLiked = !_isLiked!;
+
+      if (_isLiked!) {
+        _reactions = _reactions! + 1;
+      } else {
+        _reactions = _reactions! - 1;
+      }
+    } else {
+      _reactions = null;
+      _isLiked = null;
+    }
+    print('Tap like button');
+
+    notifyListeners();
+  }
+}
+
+class PostDataProvider extends InheritedNotifier<PostDataModel> {
+  final PostDataModel model;
+
+  const PostDataProvider({
     super.key,
-    required this.reactions,
-    required this.isLiked,
+    required this.model,
     required Widget child,
-  }) : super(child: child);
+  }) : super(
+          notifier: model,
+          child: child,
+        );
 
-  @override
-  bool updateShouldNotify(PostDataProviderInherited oldWidget) {
-    return reactions != oldWidget.reactions || isLiked != oldWidget.isLiked;
+  static PostDataModel? of(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<PostDataProvider>()
+        ?.model;
   }
 }
