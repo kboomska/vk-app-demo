@@ -70,7 +70,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
       body: IndexedStack(
         index: _selectedTab,
         children: [
-          PostListWidget(),
+          const PostListWidget(),
           Center(child: Text(_appBarOptions[1])),
           Center(child: Text(_appBarOptions[2])),
         ],

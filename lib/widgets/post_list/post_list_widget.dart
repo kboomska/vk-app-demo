@@ -1,33 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vk_app/theme/app_colors.dart';
 
-import '/resources/resources.dart';
-
-class Post {
-  final String author;
-  final String avatar;
-  final String date;
-  final String text;
-  final String media;
-  int reactions;
-  final int replies;
-  final int share;
-  final String views;
-  bool isLiked;
-
-  Post({
-    required this.author,
-    required this.avatar,
-    required this.date,
-    required this.text,
-    required this.media,
-    required this.reactions,
-    required this.replies,
-    required this.share,
-    required this.views,
-    required this.isLiked,
-  });
-}
+import '/widgets/provider/post_data_provider.dart';
+import '/theme/app_colors.dart';
 
 class PostListWidget extends StatefulWidget {
   const PostListWidget({super.key});
@@ -37,179 +11,50 @@ class PostListWidget extends StatefulWidget {
 }
 
 class _PostListWidgetState extends State<PostListWidget> {
-  final _posts = [
-    Post(
-      author: 'Другое кино',
-      avatar: AppImages.postAvatar,
-      date: '15 апр в 11:05',
-      text:
-          'Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов. Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов.',
-      media: AppImages.postMedia,
-      reactions: 120,
-      replies: 2,
-      share: 28,
-      views: '13K',
-      isLiked: true,
-    ),
-    Post(
-      author: 'Другое кино',
-      avatar: AppImages.postAvatar,
-      date: '15 апр в 11:05',
-      text:
-          'Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов. Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов.',
-      media: AppImages.postMedia,
-      reactions: 120,
-      replies: 2,
-      share: 28,
-      views: '13K',
-      isLiked: false,
-    ),
-    Post(
-      author: 'Другое кино',
-      avatar: AppImages.postAvatar,
-      date: '15 апр в 11:05',
-      text:
-          'Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов. Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов.',
-      media: AppImages.postMedia,
-      reactions: 120,
-      replies: 2,
-      share: 28,
-      views: '13K',
-      isLiked: false,
-    ),
-    Post(
-      author: 'Другое кино',
-      avatar: AppImages.postAvatar,
-      date: '15 апр в 11:05',
-      text:
-          'Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов. Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов.',
-      media: AppImages.postMedia,
-      reactions: 120,
-      replies: 2,
-      share: 28,
-      views: '13K',
-      isLiked: false,
-    ),
-    Post(
-      author: 'Другое кино',
-      avatar: AppImages.postAvatar,
-      date: '15 апр в 11:05',
-      text:
-          'Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов. Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов.',
-      media: AppImages.postMedia,
-      reactions: 120,
-      replies: 2,
-      share: 28,
-      views: '13K',
-      isLiked: false,
-    ),
-    Post(
-      author: 'Другое кино',
-      avatar: AppImages.postAvatar,
-      date: '15 апр в 11:05',
-      text:
-          'Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов. Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов.',
-      media: AppImages.postMedia,
-      reactions: 120,
-      replies: 2,
-      share: 28,
-      views: '13K',
-      isLiked: false,
-    ),
-    Post(
-      author: 'Другое кино',
-      avatar: AppImages.postAvatar,
-      date: '15 апр в 11:05',
-      text:
-          'Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов. Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов.',
-      media: AppImages.postMedia,
-      reactions: 120,
-      replies: 2,
-      share: 28,
-      views: '13K',
-      isLiked: false,
-    ),
-    Post(
-      author: 'Другое кино',
-      avatar: AppImages.postAvatar,
-      date: '15 апр в 11:05',
-      text:
-          'Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов. Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов.',
-      media: AppImages.postMedia,
-      reactions: 120,
-      replies: 2,
-      share: 28,
-      views: '13K',
-      isLiked: false,
-    ),
-    Post(
-      author: 'Другое кино',
-      avatar: AppImages.postAvatar,
-      date: '15 апр в 11:05',
-      text:
-          'Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов. Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов.',
-      media: AppImages.postMedia,
-      reactions: 120,
-      replies: 2,
-      share: 28,
-      views: '13K',
-      isLiked: false,
-    ),
-    Post(
-      author: 'Другое кино',
-      avatar: AppImages.postAvatar,
-      date: '15 апр в 11:05',
-      text:
-          'Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов. Thomas Duke путешествует по миру в поисках локаций из любимых фильмов и сериалов.',
-      media: AppImages.postMedia,
-      reactions: 120,
-      replies: 2,
-      share: 28,
-      views: '13K',
-      isLiked: false,
-    ),
-  ];
+  final model = PostDataModel();
 
   @override
   Widget build(BuildContext context) {
-    print('PostListWidget build');
-    return ColoredBox(
-      color: AppColors.mainBackgroundColor,
-      child: ListView.builder(
-        itemCount: _posts.length,
-        itemBuilder: (context, index) {
-          return PostCard(post: _posts[index]);
-        },
+    return PostDataProvider(
+      model: model,
+      child: const ColoredBox(
+        color: AppColors.mainBackgroundColor,
+        child: PostList(),
       ),
     );
   }
 }
 
-class PostCard extends StatefulWidget {
-  final Post post;
-
-  const PostCard({
+class PostList extends StatelessWidget {
+  const PostList({
     super.key,
-    required this.post,
   });
 
   @override
-  State<PostCard> createState() => _PostCardState();
+  Widget build(BuildContext context) {
+    print('PostList build');
+    return ListView.builder(
+      itemCount: PostDataProvider.watch(context)?.posts.length ?? 0,
+      itemBuilder: (context, index) {
+        return PostCard(index: index);
+      },
+    );
+  }
 }
 
-class _PostCardState extends State<PostCard> {
-  final _model = PostDataModel();
+class PostCard extends StatelessWidget {
+  final int index;
 
-  @override
-  void initState() {
-    super.initState();
-    _model.reactions = widget.post.reactions;
-    _model.isLiked = widget.post.isLiked;
-  }
+  const PostCard({
+    super.key,
+    required this.index,
+  });
 
   @override
   Widget build(BuildContext context) {
-    print('PostCard build');
+    final post = PostDataProvider.read(context)!.posts[index];
+
+    print('PostCard build: $index');
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: DecoratedBox(
@@ -217,24 +62,19 @@ class _PostCardState extends State<PostCard> {
           color: AppColors.appBackgroundColor,
           borderRadius: BorderRadius.circular(16.0),
         ),
-        child: PostDataProvider(
-          model: _model,
-          child: Column(
-            children: [
-              PostHeader(
-                avatar: widget.post.avatar,
-                author: widget.post.author,
-                date: widget.post.date,
-              ),
-              PostText(text: widget.post.text),
-              PostMedia(media: widget.post.media),
-              PostFooter(
-                replies: widget.post.replies,
-                share: widget.post.share,
-                views: widget.post.views,
-              ),
-            ],
-          ),
+        child: Column(
+          children: [
+            PostHeader(
+              avatar: post.avatar,
+              author: post.author,
+              date: post.date,
+            ),
+            PostText(text: post.text),
+            PostMedia(media: post.media),
+            PostFooter(
+              index: index,
+            ),
+          ],
         ),
       ),
     );
@@ -360,30 +200,29 @@ class PostMedia extends StatelessWidget {
 }
 
 class PostFooter extends StatelessWidget {
-  final int replies;
-  final int share;
-  final String views;
+  final int index;
 
   const PostFooter({
     super.key,
-    required this.replies,
-    required this.share,
-    required this.views,
+    required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
+    final post = PostDataProvider.read(context)!.posts[index];
     print('PostFooter build');
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
       child: Row(
         children: [
-          const PostLikeButton(),
+          PostLikeButton(
+            index: index,
+          ),
           const SizedBox(
             width: 8,
           ),
           PostBottomButton(
-            buttonCounter: replies,
+            buttonCounter: post.replies,
             buttonIcon: const Icon(
               Icons.messenger_outline_outlined,
               color: AppColors.postBottomButtons,
@@ -394,7 +233,7 @@ class PostFooter extends StatelessWidget {
             width: 8,
           ),
           PostBottomButton(
-            buttonCounter: share,
+            buttonCounter: post.share,
             buttonIcon: const Icon(
               Icons.reply_rounded,
               color: AppColors.postBottomButtons,
@@ -415,7 +254,7 @@ class PostFooter extends StatelessWidget {
                 width: 8,
               ),
               Text(
-                views,
+                post.views,
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
@@ -431,20 +270,25 @@ class PostFooter extends StatelessWidget {
 }
 
 class PostLikeButton extends StatelessWidget {
+  final int index;
+
   const PostLikeButton({
     super.key,
+    required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
-    final int buttonCounter = PostDataProvider.of(context)?.reactions ?? 0;
-    final bool isLiked = PostDataProvider.of(context)?.isLiked ?? false;
+    final post = PostDataProvider.read(context)!.posts[index];
+    final int reactions = post.reactions;
+    final bool isLiked = post.isLiked;
 
     print('PostLikeButton build');
     return Material(
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
-        onTap: () => PostDataProvider.of(context)?.onTapLikeButton(),
+        onTap: () =>
+            PostDataProvider.watch(context)?.onTapLikeButton(index: index),
         borderRadius: BorderRadius.circular(16),
         child: Container(
           height: 32,
@@ -469,7 +313,7 @@ class PostLikeButton extends StatelessWidget {
                   width: 4,
                 ),
                 Text(
-                  '$buttonCounter',
+                  '$reactions',
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
@@ -526,61 +370,5 @@ class PostBottomButton extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class PostDataModel extends ChangeNotifier {
-  int? _reactions;
-  int? replies;
-  int? share;
-  String? views;
-  bool? _isLiked;
-
-  set reactions(int value) => _reactions = value;
-  set isLiked(bool value) => _isLiked = value;
-
-  int get reactions {
-    return _reactions ?? 0;
-  }
-
-  bool get isLiked {
-    return _isLiked ?? false;
-  }
-
-  void onTapLikeButton() {
-    if (_reactions != null && _isLiked != null) {
-      isLiked = !_isLiked!;
-
-      if (_isLiked!) {
-        _reactions = _reactions! + 1;
-      } else {
-        _reactions = _reactions! - 1;
-      }
-    } else {
-      _reactions = null;
-      _isLiked = null;
-    }
-    print('Tap like button');
-
-    notifyListeners();
-  }
-}
-
-class PostDataProvider extends InheritedNotifier<PostDataModel> {
-  final PostDataModel model;
-
-  const PostDataProvider({
-    super.key,
-    required this.model,
-    required Widget child,
-  }) : super(
-          notifier: model,
-          child: child,
-        );
-
-  static PostDataModel? of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<PostDataProvider>()
-        ?.model;
   }
 }
