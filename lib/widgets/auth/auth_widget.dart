@@ -142,6 +142,8 @@ class __FormWidgetState extends State<_FormWidget> {
               suffixIcon: _loginTextController.text == ''
                   ? null
                   : InkWell(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
                       onTap: () {
                         _loginTextController.text = '';
                         setState(() {});

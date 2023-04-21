@@ -96,6 +96,7 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
   String? errorText;
   bool isError = false;
   bool isContinue = false;
+  bool obscureText = true;
 
   @override
   void initState() {
@@ -143,6 +144,7 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
   Widget build(BuildContext context) {
     final errorText = this.errorText;
     final isError = this.isError;
+    // bool obscureText = this.obscureText;
 
     return Expanded(
       child: Column(
@@ -157,11 +159,32 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
               ),
               cursorColor: AppColors.logoBlue,
               cursorHeight: 20,
-              obscureText: true,
+              obscureText: obscureText,
               onChanged: (text) => textFieldCheckError(text),
               decoration: AppTextField.inputDecoration(
                 hintText: 'Введите пароль',
                 isError: isError,
+                suffixIcon: _passwordTextController.text == ''
+                    ? null
+                    : InkWell(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onTap: () {
+                          obscureText = !obscureText;
+                          setState(() {});
+                        },
+                        child: obscureText
+                            ? const Icon(
+                                Icons.visibility,
+                                color: AppColors.textFieldHint,
+                                size: 16,
+                              )
+                            : const Icon(
+                                Icons.visibility_off,
+                                color: AppColors.textFieldHint,
+                                size: 16,
+                              ),
+                      ),
               ),
             ),
           ),
