@@ -26,7 +26,8 @@ class LoginWidgetModelProvider extends InheritedNotifier {
 }
 
 class LoginWidgetModel extends ChangeNotifier {
-  String? _login;
+  // String? _login;
+  String? _login = 'admin@mail.ru'; // For testing only!
   String? _errorText;
   bool? _isError;
 
@@ -57,7 +58,7 @@ class LoginWidgetModel extends ChangeNotifier {
       _isError = false;
 
       Navigator.of(context).pushNamed('/password', arguments: _login);
-    } else if (login == '') {
+    } else if (login == '' || login == null) {
       _errorText = 'Не указана почта';
       _isError = true;
       print('Пустое поле ввода');
@@ -68,5 +69,9 @@ class LoginWidgetModel extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  void goToSignInScreen() {
+    print('Зарегистрироваться');
   }
 }

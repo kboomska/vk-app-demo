@@ -91,105 +91,139 @@ class _HeaderOfLoginWidget extends StatelessWidget {
   }
 }
 
-class _FormOfLoginWidget extends StatefulWidget {
+class _FormOfLoginWidget extends StatelessWidget {
   const _FormOfLoginWidget({super.key});
 
   @override
-  State<_FormOfLoginWidget> createState() => _FormOfLoginWidgetState();
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: const [
+          _LoginFormWidget(),
+          SizedBox(height: 20),
+          _LoginButton(),
+          Spacer(),
+          _SingInButton(),
+        ],
+      ),
+    );
+  }
 }
 
-class _FormOfLoginWidgetState extends State<_FormOfLoginWidget> {
-  final _loginTextController = TextEditingController(); // text: 'admin@mail.ru'
+class _LoginFormWidget extends StatefulWidget {
+  const _LoginFormWidget({super.key});
+
+  @override
+  State<_LoginFormWidget> createState() => __LoginFormWidgetState();
+}
+
+class __LoginFormWidgetState extends State<_LoginFormWidget> {
+  // final _loginTextController = TextEditingController();
+  final _loginTextController =
+      TextEditingController(text: 'admin@mail.ru'); // For testing only!
 
   @override
   Widget build(BuildContext context) {
     final errorText =
         LoginWidgetModelProvider.noticeOf(context)?.model.errorText;
-    bool isError =
+    final isError =
         LoginWidgetModelProvider.readOnly(context)?.model.isError ?? false;
 
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextField(
-            controller: _loginTextController,
-            style: const TextStyle(
-              fontSize: 16,
-            ),
-            cursorColor: AppColors.logoBlue,
-            cursorHeight: 20,
-            onChanged: (text) =>
-                LoginWidgetModelProvider.noticeOf(context)?.model.login = text,
-            decoration: AppTextField.inputDecoration(
-              hintText: 'Введите почту',
-              isError: isError,
-              suffixIcon:
-                  LoginWidgetModelProvider.readOnly(context)?.model.login == ''
-                      ? null
-                      : InkWell(
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onTap: () {
-                            LoginWidgetModelProvider.noticeOf(context)
-                                ?.model
-                                .login = '';
-                            _loginTextController.text = '';
-                          },
-                          child: const Icon(
-                            Icons.highlight_off,
-                            color: AppColors.textFieldHint,
-                            size: 16,
-                          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          controller: _loginTextController,
+          style: const TextStyle(
+            fontSize: 16,
+          ),
+          cursorColor: AppColors.logoBlue,
+          cursorHeight: 20,
+          onChanged: (text) =>
+              LoginWidgetModelProvider.noticeOf(context)?.model.login = text,
+          decoration: AppTextField.inputDecoration(
+            hintText: 'Введите почту',
+            isError: isError,
+            suffixIcon:
+                LoginWidgetModelProvider.readOnly(context)?.model.login == ''
+                    ? null
+                    : InkWell(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onTap: () {
+                          LoginWidgetModelProvider.noticeOf(context)
+                              ?.model
+                              .login = '';
+                          _loginTextController.text = '';
+                        },
+                        child: const Icon(
+                          Icons.highlight_off,
+                          color: AppColors.textFieldHint,
+                          size: 16,
                         ),
-            ),
-            keyboardType: TextInputType.emailAddress,
+                      ),
           ),
-          if (errorText != null && isError) ...[
-            const SizedBox(
-              height: 8,
-            ),
-            Text(
-              errorText,
-              style: const TextStyle(
-                fontSize: 14,
-                color: AppColors.textFieldErrorText,
-              ),
-            ),
-          ],
+          keyboardType: TextInputType.emailAddress,
+        ),
+        if (errorText != null && isError) ...[
           const SizedBox(
-            height: 20,
+            height: 8,
           ),
-          OutlinedButton(
-            onPressed: () => LoginWidgetModelProvider.readOnly(context)
-                ?.model
-                .goToPasswordScreen(context),
-            style: AppButtonStyle.blueStyleButton,
-            child: const Text(
-              'Войти',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          const Spacer(),
-          OutlinedButton(
-            onPressed: () {
-              print('Зарегистрироваться');
-            },
-            style: AppButtonStyle.greenStyleButton,
-            child: const Text(
-              'Зарегистрироваться',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
+          Text(
+            errorText,
+            style: const TextStyle(
+              fontSize: 14,
+              color: AppColors.textFieldErrorText,
             ),
           ),
         ],
+      ],
+    );
+  }
+}
+
+class _LoginButton extends StatelessWidget {
+  const _LoginButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: () => LoginWidgetModelProvider.readOnly(context)
+          ?.model
+          .goToPasswordScreen(context),
+      style: AppButtonStyle.blueStyleButton,
+      child: const Text(
+        'Войти',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+}
+
+class _SingInButton extends StatelessWidget {
+  const _SingInButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed:
+          LoginWidgetModelProvider.readOnly(context)?.model.goToSignInScreen,
+      style: AppButtonStyle.greenStyleButton,
+      child: const Text(
+        'Зарегистрироваться',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     );
   }
