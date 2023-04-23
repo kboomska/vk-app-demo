@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/widgets/provider/login_widget_provider.dart';
 import '/theme/app_button_style.dart';
 import '/theme/app_text_field.dart';
 import '/theme/app_colors.dart';
@@ -12,6 +13,8 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
+  final _model = LoginWidgetModel();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +25,22 @@ class _LoginWidgetState extends State<LoginWidget> {
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.appBackgroundColor,
-      body: const _HeaderOfLoginWidget(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
+        child: LoginWidgetModelProvider(
+          model: _model,
+          child: Column(
+            children: const [
+              _HeaderOfLoginWidget(),
+              SizedBox(height: 20),
+              _FormOfLoginWidget(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -32,19 +50,15 @@ class _HeaderOfLoginWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 16,
-      ),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 52,
-          ),
-          Container(
-            height: 56,
-            width: 56,
+    return Column(
+      children: [
+        const SizedBox(
+          height: 52,
+        ),
+        SizedBox(
+          height: 56,
+          width: 56,
+          child: DecoratedBox(
             decoration: BoxDecoration(
               color: AppColors.logoBlue,
               borderRadius: BorderRadius.circular(15),
@@ -60,23 +74,19 @@ class _HeaderOfLoginWidget extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 16,
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        const Text(
+          'Вход ВКонтакте',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
           ),
-          const Text(
-            'Вход ВКонтакте',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const _FormOfLoginWidget(),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -89,40 +99,14 @@ class _FormOfLoginWidget extends StatefulWidget {
 }
 
 class _FormOfLoginWidgetState extends State<_FormOfLoginWidget> {
-  final _loginTextController = TextEditingController(text: 'admin@mail.ru');
-
-  String? errorText;
-  bool isError = false;
-
-  void _login() {
-    final login = _loginTextController.text;
-
-    if (login == 'admin@mail.ru') {
-      errorText = null;
-      isError = false;
-
-      Navigator.of(context).pushNamed('/password', arguments: login);
-    } else if (login == '') {
-      errorText = 'Не указана почта';
-      isError = true;
-      print('Пустое поле ввода');
-    } else {
-      errorText = 'Неверный адрес почты';
-      isError = true;
-      print('Ошибка при вводе почты');
-    }
-    setState(() {});
-  }
-
-  void textFieldCheckError(String text) {
-    isError = false;
-    setState(() {});
-  }
+  final _loginTextController = TextEditingController(); // text: 'admin@mail.ru'
 
   @override
   Widget build(BuildContext context) {
-    final errorText = this.errorText;
-    bool isError = this.isError;
+    final errorText =
+        LoginWidgetModelProvider.noticeOf(context)?.model.errorText;
+    bool isError =
+        LoginWidgetModelProvider.readOnly(context)?.model.isError ?? false;
 
     return Expanded(
       child: Column(
@@ -135,25 +119,29 @@ class _FormOfLoginWidgetState extends State<_FormOfLoginWidget> {
             ),
             cursorColor: AppColors.logoBlue,
             cursorHeight: 20,
-            onChanged: (text) => textFieldCheckError(text),
+            onChanged: (text) =>
+                LoginWidgetModelProvider.noticeOf(context)?.model.login = text,
             decoration: AppTextField.inputDecoration(
               hintText: 'Введите почту',
               isError: isError,
-              suffixIcon: _loginTextController.text == ''
-                  ? null
-                  : InkWell(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () {
-                        _loginTextController.text = '';
-                        setState(() {});
-                      },
-                      child: const Icon(
-                        Icons.highlight_off,
-                        color: AppColors.textFieldHint,
-                        size: 16,
-                      ),
-                    ),
+              suffixIcon:
+                  LoginWidgetModelProvider.readOnly(context)?.model.login == ''
+                      ? null
+                      : InkWell(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () {
+                            LoginWidgetModelProvider.noticeOf(context)
+                                ?.model
+                                .login = '';
+                            _loginTextController.text = '';
+                          },
+                          child: const Icon(
+                            Icons.highlight_off,
+                            color: AppColors.textFieldHint,
+                            size: 16,
+                          ),
+                        ),
             ),
             keyboardType: TextInputType.emailAddress,
           ),
@@ -173,7 +161,9 @@ class _FormOfLoginWidgetState extends State<_FormOfLoginWidget> {
             height: 20,
           ),
           OutlinedButton(
-            onPressed: _login,
+            onPressed: () => LoginWidgetModelProvider.readOnly(context)
+                ?.model
+                .goToPasswordScreen(context),
             style: AppButtonStyle.blueStyleButton,
             child: const Text(
               'Войти',
