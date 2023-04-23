@@ -113,9 +113,9 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
       errorText = null;
       isError = false;
 
-      // Navigator.of(context).pushReplacementNamed('/main_screen');
+      // Navigator.of(context).pushReplacementNamed('/home');
       Navigator.of(context).pushNamedAndRemoveUntil(
-          '/main_screen', ModalRoute.withName('/auth'));
+          '/home', ModalRoute.withName('/'));
     } else {
       errorText = 'Неверный пароль, проверьте правильность введенных данных';
       isError = true;

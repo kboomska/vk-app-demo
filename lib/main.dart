@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/main_screen/main_screen_widget.dart';
 import '/widgets/auth/password_widget.dart';
-import 'widgets/auth/auth_widget.dart';
+import 'widgets/auth/login_widget.dart';
+import 'widgets/home/home_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'VK App',
       routes: {
-        '/login': (context) => AuthWidget(),
+        '/login': (context) => LoginWidget(),
         '/password': (context) => PasswordWidget(),
-        '/main_screen': (context) => MainScreenWidget(),
+        '/home': (context) => HomeWidget(),
       },
       initialRoute: '/login',
     );

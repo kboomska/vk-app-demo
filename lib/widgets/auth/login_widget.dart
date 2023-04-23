@@ -4,14 +4,14 @@ import '/theme/app_button_style.dart';
 import '/theme/app_text_field.dart';
 import '/theme/app_colors.dart';
 
-class AuthWidget extends StatefulWidget {
-  const AuthWidget({super.key});
+class LoginWidget extends StatefulWidget {
+  const LoginWidget({super.key});
 
   @override
-  State<AuthWidget> createState() => _AuthWidgetState();
+  State<LoginWidget> createState() => _LoginWidgetState();
 }
 
-class _AuthWidgetState extends State<AuthWidget> {
+class _LoginWidgetState extends State<LoginWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,13 +22,13 @@ class _AuthWidgetState extends State<AuthWidget> {
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.appBackgroundColor,
-      body: const _HeaderWidget(),
+      body: const _HeaderOfLoginWidget(),
     );
   }
 }
 
-class _HeaderWidget extends StatelessWidget {
-  const _HeaderWidget({super.key});
+class _HeaderOfLoginWidget extends StatelessWidget {
+  const _HeaderOfLoginWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -74,21 +74,21 @@ class _HeaderWidget extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const _FormWidget(),
+          const _FormOfLoginWidget(),
         ],
       ),
     );
   }
 }
 
-class _FormWidget extends StatefulWidget {
-  const _FormWidget({super.key});
+class _FormOfLoginWidget extends StatefulWidget {
+  const _FormOfLoginWidget({super.key});
 
   @override
-  State<_FormWidget> createState() => __FormWidgetState();
+  State<_FormOfLoginWidget> createState() => _FormOfLoginWidgetState();
 }
 
-class __FormWidgetState extends State<_FormWidget> {
+class _FormOfLoginWidgetState extends State<_FormOfLoginWidget> {
   final _loginTextController = TextEditingController(text: 'admin@mail.ru');
 
   String? errorText;

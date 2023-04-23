@@ -177,10 +177,10 @@ class PostDataModel extends ChangeNotifier {
   }
 }
 
-class PostDataProvider extends InheritedNotifier<PostDataModel> {
+class PostDataModelProvider extends InheritedNotifier<PostDataModel> {
   final PostDataModel model;
 
-  const PostDataProvider({
+  const PostDataModelProvider({
     super.key,
     required this.model,
     required Widget child,
@@ -189,16 +189,16 @@ class PostDataProvider extends InheritedNotifier<PostDataModel> {
           child: child,
         );
 
-  static PostDataModel? watch(BuildContext context) {
+  static PostDataModel? noticeOf(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<PostDataProvider>()
+        .dependOnInheritedWidgetOfExactType<PostDataModelProvider>()
         ?.model;
   }
 
-  static PostDataModel? read(BuildContext context) {
+  static PostDataModel? readOnly(BuildContext context) {
     final widget = context
-        .getElementForInheritedWidgetOfExactType<PostDataProvider>()
+        .getElementForInheritedWidgetOfExactType<PostDataModelProvider>()
         ?.widget;
-    return widget is PostDataProvider ? widget.notifier : null;
+    return widget is PostDataModelProvider ? widget.notifier : null;
   }
 }
