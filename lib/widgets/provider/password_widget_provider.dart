@@ -91,6 +91,7 @@ class PasswordWidgetModel extends ChangeNotifier {
 
     if (text == '') {
       _isContinue = false;
+      _isObscure = true;
     } else {
       _isContinue = true;
     }

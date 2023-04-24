@@ -91,14 +91,33 @@ class _HeaderOfPasswordWidget extends StatelessWidget {
   }
 }
 
-class _FormOfPasswordWidget extends StatefulWidget {
+class _FormOfPasswordWidget extends StatelessWidget {
   const _FormOfPasswordWidget({super.key});
 
   @override
-  State<_FormOfPasswordWidget> createState() => __FormOfPasswordWidgetState();
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          _PasswordFormWidget(),
+          _ForgottenPasswordButton(),
+          Spacer(),
+          _ContinueButton(),
+        ],
+      ),
+    );
+  }
 }
 
-class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
+class _PasswordFormWidget extends StatefulWidget {
+  const _PasswordFormWidget({super.key});
+
+  @override
+  State<_PasswordFormWidget> createState() => __PasswordFormWidgetState();
+}
+
+class __PasswordFormWidgetState extends State<_PasswordFormWidget> {
   // final _passwordTextController = TextEditingController();
   final _passwordTextController =
       TextEditingController(text: 'admin'); // For testing only!
@@ -111,103 +130,120 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
         PasswordWidgetModelProvider.readOnly(context)?.model.isError ?? false;
     bool isObscure =
         PasswordWidgetModelProvider.readOnly(context)?.model.isObscure ?? true;
-    final isContinue =
-        PasswordWidgetModelProvider.readOnly(context)?.model.isContinue ??
-            false;
 
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Directionality(
-            textDirection: TextDirection.ltr,
-            child: TextField(
-              controller: _passwordTextController,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-              cursorColor: AppColors.logoBlue,
-              cursorHeight: 20,
-              obscureText: isObscure,
-              onChanged: (text) => PasswordWidgetModelProvider.readOnly(context)
-                  ?.model
-                  .password = text,
-              decoration: AppTextField.inputDecoration(
-                hintText: 'Введите пароль',
-                isError: isError,
-                suffixIcon: PasswordWidgetModelProvider.readOnly(context)
-                            ?.model
-                            .password ==
-                        ''
-                    ? null
-                    : InkWell(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onTap: () {
-                          PasswordWidgetModelProvider.readOnly(context)
-                              ?.model
-                              .obscureText();
-                        },
-                        child: isObscure
-                            ? const Icon(
-                                Icons.visibility,
-                                color: AppColors.textFieldHint,
-                                size: 16,
-                              )
-                            : const Icon(
-                                Icons.visibility_off,
-                                color: AppColors.textFieldHint,
-                                size: 16,
-                              ),
-                      ),
-              ),
+    return Column(
+      children: [
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: TextField(
+            controller: _passwordTextController,
+            style: const TextStyle(
+              fontSize: 16,
             ),
-          ),
-          if (errorText != null && isError) ...[
-            const SizedBox(
-              height: 8,
-            ),
-            Text(
-              errorText,
-              style: const TextStyle(
-                fontSize: 14,
-                color: AppColors.textFieldErrorText,
-              ),
-            ),
-          ],
-          TextButton(
-            onPressed: PasswordWidgetModelProvider.readOnly(context)
+            cursorColor: AppColors.logoBlue,
+            cursorHeight: 20,
+            obscureText: isObscure,
+            onChanged: (text) => PasswordWidgetModelProvider.readOnly(context)
                 ?.model
-                .forgottenPassword,
-            style: AppButtonStyle.linkStyleButton,
-            child: const Text(
-              'Забыли или не установили пароль?',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
+                .password = text,
+            decoration: AppTextField.inputDecoration(
+              hintText: 'Введите пароль',
+              isError: isError,
+              suffixIcon: PasswordWidgetModelProvider.readOnly(context)
+                          ?.model
+                          .password ==
+                      ''
+                  ? null
+                  : InkWell(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () {
+                        PasswordWidgetModelProvider.readOnly(context)
+                            ?.model
+                            .obscureText();
+                      },
+                      child: isObscure
+                          ? const Icon(
+                              Icons.visibility,
+                              color: AppColors.textFieldHint,
+                              size: 16,
+                            )
+                          : const Icon(
+                              Icons.visibility_off,
+                              color: AppColors.textFieldHint,
+                              size: 16,
+                            ),
+                    ),
             ),
           ),
-          const Spacer(),
-          OutlinedButton(
-            onPressed: isContinue
-                ? () => PasswordWidgetModelProvider.readOnly(context)
-                    ?.model
-                    .goToHomeScreen(context)
-                : null,
-            style: AppButtonStyle.blueStyleDeactivableButton(
-              isActive: isContinue,
-            ),
-            child: const Text(
-              'Продолжить',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
+        ),
+        if (errorText != null && isError) ...[
+          const SizedBox(
+            height: 8,
+          ),
+          Text(
+            errorText,
+            style: const TextStyle(
+              fontSize: 14,
+              color: AppColors.textFieldErrorText,
             ),
           ),
         ],
+      ],
+    );
+  }
+}
+
+class _ForgottenPasswordButton extends StatelessWidget {
+  const _ForgottenPasswordButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: PasswordWidgetModelProvider.readOnly(context)
+          ?.model
+          .forgottenPassword,
+      style: AppButtonStyle.linkStyleButton,
+      child: const Text(
+        'Забыли или не установили пароль?',
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+}
+
+class _ContinueButton extends StatelessWidget {
+  const _ContinueButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isContinue =
+        PasswordWidgetModelProvider.noticeOf(context)?.model.isContinue ??
+            false;
+
+    return OutlinedButton(
+      onPressed: isContinue
+          ? () => PasswordWidgetModelProvider.readOnly(context)
+              ?.model
+              .goToHomeScreen(context)
+          : null,
+      style: AppButtonStyle.blueStyleDeactivableButton(
+        isActive: isContinue,
+      ),
+      child: const Text(
+        'Продолжить',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     );
   }
