@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/widgets/provider/password_widget_provider.dart';
 import '/theme/app_button_style.dart';
 import '/theme/app_text_field.dart';
 import '/theme/app_colors.dart';
@@ -13,6 +14,8 @@ class PasswordWidget extends StatefulWidget {
 }
 
 class _PasswordWidgetState extends State<PasswordWidget> {
+  final _model = PasswordWidgetModel();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +27,22 @@ class _PasswordWidgetState extends State<PasswordWidget> {
         title: IconID.small,
       ),
       backgroundColor: AppColors.appBackgroundColor,
-      body: const _HeaderOfPasswordWidget(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
+        child: PasswordWidgetModelProvider(
+          model: _model,
+          child: Column(
+            children: const [
+              _HeaderOfPasswordWidget(),
+              SizedBox(height: 20),
+              _FormOfPasswordWidget(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -36,49 +54,39 @@ class _HeaderOfPasswordWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final String login = ModalRoute.of(context)!.settings.arguments as String;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 16,
-      ),
-      child: Column(
-        children: [
-          const Text(
-            'Введите пароль',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-            ),
+    return Column(
+      children: [
+        const Text(
+          'Введите пароль',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
           ),
-          const SizedBox(
-            height: 10,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        const Text(
+          'Укажите пароль, привязанный к почте',
+          style: TextStyle(
+            fontSize: 16,
+            color: AppColors.textFieldHint,
           ),
-          const Text(
-            'Укажите пароль, привязанный к почте',
-            style: TextStyle(
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        FittedBox(
+          child: Text(
+            login,
+            style: const TextStyle(
               fontSize: 16,
-              color: AppColors.textFieldHint,
+              color: Colors.black,
             ),
           ),
-          const SizedBox(
-            height: 4,
-          ),
-          FittedBox(
-            child: Text(
-              login,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const _FormOfPasswordWidget(),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -91,60 +99,21 @@ class _FormOfPasswordWidget extends StatefulWidget {
 }
 
 class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
-  final _passwordTextController = TextEditingController(text: 'admin');
-
-  String? errorText;
-  bool isError = false;
-  bool isContinue = false;
-  bool obscureText = true;
-
-  @override
-  void initState() {
-    super.initState();
-    if (_passwordTextController.text != '') {
-      isContinue = true;
-    }
-  }
-
-  void _password() {
-    final password = _passwordTextController.text;
-
-    if (password == 'admin') {
-      errorText = null;
-      isError = false;
-
-      // Navigator.of(context).pushReplacementNamed('/home');
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          '/home', ModalRoute.withName('/'));
-    } else {
-      errorText = 'Неверный пароль, проверьте правильность введенных данных';
-      isError = true;
-      print('Ошибка при вводе пароля');
-    }
-    setState(() {});
-  }
-
-  void _forgottenPassword() {
-    print('Забыли пароль?');
-  }
-
-  void textFieldCheckError(String text) {
-    isError = false;
-    errorText = null;
-
-    if (text == '') {
-      isContinue = false;
-    } else {
-      isContinue = true;
-    }
-    setState(() {});
-  }
+  // final _passwordTextController = TextEditingController();
+  final _passwordTextController =
+      TextEditingController(text: 'admin'); // For testing only!
 
   @override
   Widget build(BuildContext context) {
-    final errorText = this.errorText;
-    final isError = this.isError;
-    // bool obscureText = this.obscureText;
+    final errorText =
+        PasswordWidgetModelProvider.noticeOf(context)?.model.errorText;
+    final isError =
+        PasswordWidgetModelProvider.readOnly(context)?.model.isError ?? false;
+    bool isObscure =
+        PasswordWidgetModelProvider.readOnly(context)?.model.isObscure ?? true;
+    final isContinue =
+        PasswordWidgetModelProvider.readOnly(context)?.model.isContinue ??
+            false;
 
     return Expanded(
       child: Column(
@@ -159,21 +128,27 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
               ),
               cursorColor: AppColors.logoBlue,
               cursorHeight: 20,
-              obscureText: obscureText,
-              onChanged: (text) => textFieldCheckError(text),
+              obscureText: isObscure,
+              onChanged: (text) => PasswordWidgetModelProvider.readOnly(context)
+                  ?.model
+                  .password = text,
               decoration: AppTextField.inputDecoration(
                 hintText: 'Введите пароль',
                 isError: isError,
-                suffixIcon: _passwordTextController.text == ''
+                suffixIcon: PasswordWidgetModelProvider.readOnly(context)
+                            ?.model
+                            .password ==
+                        ''
                     ? null
                     : InkWell(
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onTap: () {
-                          obscureText = !obscureText;
-                          setState(() {});
+                          PasswordWidgetModelProvider.readOnly(context)
+                              ?.model
+                              .obscureText();
                         },
-                        child: obscureText
+                        child: isObscure
                             ? const Icon(
                                 Icons.visibility,
                                 color: AppColors.textFieldHint,
@@ -201,7 +176,9 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
             ),
           ],
           TextButton(
-            onPressed: _forgottenPassword,
+            onPressed: PasswordWidgetModelProvider.readOnly(context)
+                ?.model
+                .forgottenPassword,
             style: AppButtonStyle.linkStyleButton,
             child: const Text(
               'Забыли или не установили пароль?',
@@ -213,7 +190,11 @@ class __FormOfPasswordWidgetState extends State<_FormOfPasswordWidget> {
           ),
           const Spacer(),
           OutlinedButton(
-            onPressed: isContinue ? _password : null,
+            onPressed: isContinue
+                ? () => PasswordWidgetModelProvider.readOnly(context)
+                    ?.model
+                    .goToHomeScreen(context)
+                : null,
             style: AppButtonStyle.blueStyleDeactivableButton(
               isActive: isContinue,
             ),
