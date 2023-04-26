@@ -33,8 +33,11 @@ class PostList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('PostList build');
-    return ListView.builder(
+    return ListView.separated(
       itemCount: PostDataModelProvider.noticeOf(context)?.posts.length ?? 0,
+      separatorBuilder: (context, index) => const SizedBox(
+        height: 8,
+      ),
       itemBuilder: (context, index) {
         return PostCard(index: index);
       },
@@ -55,27 +58,24 @@ class PostCard extends StatelessWidget {
     final post = PostDataModelProvider.readOnly(context)!.posts[index];
 
     print('PostCard build: $index');
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: AppColors.appBackgroundColor,
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        child: Column(
-          children: [
-            PostHeader(
-              avatar: post.avatar,
-              author: post.author,
-              date: post.date,
-            ),
-            PostText(text: post.text),
-            PostMedia(media: post.media),
-            PostFooter(
-              index: index,
-            ),
-          ],
-        ),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: AppColors.appBackgroundColor,
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      child: Column(
+        children: [
+          PostHeader(
+            avatar: post.avatar,
+            author: post.author,
+            date: post.date,
+          ),
+          PostText(text: post.text),
+          PostMedia(media: post.media),
+          PostFooter(
+            index: index,
+          ),
+        ],
       ),
     );
   }
@@ -287,8 +287,8 @@ class PostLikeButton extends StatelessWidget {
     return Material(
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
-        onTap: () =>
-            PostDataModelProvider.noticeOf(context)?.onTapLikeButton(index: index),
+        onTap: () => PostDataModelProvider.noticeOf(context)
+            ?.onTapLikeButton(index: index),
         borderRadius: BorderRadius.circular(16),
         child: Container(
           height: 32,

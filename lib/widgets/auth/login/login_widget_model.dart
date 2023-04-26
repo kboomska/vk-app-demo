@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:vk_app/widgets/auth/password/password_widget.dart';
+
 class LoginWidgetModelProvider extends InheritedNotifier {
   final LoginWidgetModel model;
 
@@ -57,7 +59,7 @@ class LoginWidgetModel extends ChangeNotifier {
       _errorText = null;
       _isError = false;
 
-      Navigator.of(context).pushNamed('/password', arguments: _login);
+      Navigator.of(context).pushNamed(PasswordWidget.path, arguments: login);
     } else if (login == '' || login == null) {
       _errorText = 'Не указана почта';
       _isError = true;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:vk_app/widgets/home/home_widget.dart';
+
 class PasswordWidgetModelProvider extends InheritedNotifier {
   final PasswordWidgetModel model;
 
@@ -26,6 +28,7 @@ class PasswordWidgetModelProvider extends InheritedNotifier {
 }
 
 class PasswordWidgetModel extends ChangeNotifier {
+  final String _login;
   // String? _password;
   String? _password = 'admin'; // For testing only!
   String? _errorText;
@@ -34,12 +37,18 @@ class PasswordWidgetModel extends ChangeNotifier {
   bool? _isContinue = true; // For testing only!
   bool _isObscure = true;
 
+  PasswordWidgetModel({required login}) : _login = login;
+
   set password(String value) {
     _password = value;
     _isError = false;
 
     textFieldCheckError(value);
     notifyListeners();
+  }
+
+  String get login {
+    return _login;
   }
 
   String? get errorText {
@@ -75,9 +84,9 @@ class PasswordWidgetModel extends ChangeNotifier {
       _errorText = null;
       _isError = false;
 
-      // Navigator.of(context).pushReplacementNamed('/home');
+      // Navigator.of(context).pushReplacementNamed(HomeWidget.path);
       Navigator.of(context)
-          .pushNamedAndRemoveUntil('/home', ModalRoute.withName('/'));
+          .pushNamedAndRemoveUntil(HomeWidget.path, ModalRoute.withName('/'));
     } else {
       _errorText = 'Неверный пароль, проверьте правильность введенных данных';
       _isError = true;

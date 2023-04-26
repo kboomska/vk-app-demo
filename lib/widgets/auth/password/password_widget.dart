@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '/widgets/provider/password_widget_provider.dart';
-import '/theme/app_button_style.dart';
-import '/theme/app_text_field.dart';
-import '/theme/app_colors.dart';
-import '/theme/icon_id.dart';
+import 'package:vk_app/widgets/auth/password/password_widget_model.dart';
+import 'package:vk_app/theme/app_button_style.dart';
+import 'package:vk_app/theme/app_text_field.dart';
+import 'package:vk_app/theme/app_colors.dart';
+import 'package:vk_app/theme/icon_id.dart';
 
 class PasswordWidget extends StatefulWidget {
+  static const path = '/login/password';
+
   const PasswordWidget({super.key});
 
   @override
@@ -14,7 +16,16 @@ class PasswordWidget extends StatefulWidget {
 }
 
 class _PasswordWidgetState extends State<PasswordWidget> {
-  final _model = PasswordWidgetModel();
+  PasswordWidgetModel? _model;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_model == null) {
+      final String login = ModalRoute.of(context)!.settings.arguments as String;
+      _model = PasswordWidgetModel(login: login);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +44,7 @@ class _PasswordWidgetState extends State<PasswordWidget> {
           vertical: 16,
         ),
         child: PasswordWidgetModelProvider(
-          model: _model,
+          model: _model!,
           child: Column(
             children: const [
               _HeaderOfPasswordWidget(),
@@ -52,7 +63,7 @@ class _HeaderOfPasswordWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String login = ModalRoute.of(context)!.settings.arguments as String;
+    final model = PasswordWidgetModelProvider.readOnly(context)!.model;
 
     return Column(
       children: [
@@ -79,7 +90,7 @@ class _HeaderOfPasswordWidget extends StatelessWidget {
         ),
         FittedBox(
           child: Text(
-            login,
+            model.login,
             style: const TextStyle(
               fontSize: 16,
               color: Colors.black,
@@ -124,12 +135,12 @@ class __PasswordFormWidgetState extends State<_PasswordFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final errorText =
-        PasswordWidgetModelProvider.noticeOf(context)?.model.errorText;
-    final isError =
-        PasswordWidgetModelProvider.readOnly(context)?.model.isError ?? false;
-    bool isObscure =
-        PasswordWidgetModelProvider.readOnly(context)?.model.isObscure ?? true;
+    final observeModel = PasswordWidgetModelProvider.noticeOf(context)?.model;
+    final readModel = PasswordWidgetModelProvider.readOnly(context)?.model;
+
+    final errorText = observeModel?.errorText;
+    final isError = readModel?.isError ?? false;
+    bool isObscure = readModel?.isObscure ?? true;
 
     return Column(
       children: [
@@ -143,24 +154,17 @@ class __PasswordFormWidgetState extends State<_PasswordFormWidget> {
             cursorColor: AppColors.logoBlue,
             cursorHeight: 20,
             obscureText: isObscure,
-            onChanged: (text) => PasswordWidgetModelProvider.readOnly(context)
-                ?.model
-                .password = text,
+            onChanged: (text) => readModel?.password = text,
             decoration: AppTextField.inputDecoration(
               hintText: 'Введите пароль',
               isError: isError,
-              suffixIcon: PasswordWidgetModelProvider.readOnly(context)
-                          ?.model
-                          .password ==
-                      ''
+              suffixIcon: readModel?.password == ''
                   ? null
                   : InkWell(
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onTap: () {
-                        PasswordWidgetModelProvider.readOnly(context)
-                            ?.model
-                            .obscureText();
+                        readModel?.obscureText();
                       },
                       child: isObscure
                           ? const Icon(

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '/widgets/provider/login_widget_provider.dart';
-import '/theme/app_button_style.dart';
-import '/theme/app_text_field.dart';
-import '/theme/app_colors.dart';
+import 'package:vk_app/widgets/auth/login/login_widget_model.dart';
+import 'package:vk_app/theme/app_button_style.dart';
+import 'package:vk_app/theme/app_text_field.dart';
+import 'package:vk_app/theme/app_colors.dart';
 
 class LoginWidget extends StatefulWidget {
+  static const path = '/login';
+
   const LoginWidget({super.key});
 
   @override
@@ -124,10 +126,10 @@ class __LoginFormWidgetState extends State<_LoginFormWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final model = LoginWidgetModelProvider.readOnly(context)?.model;
     final errorText =
         LoginWidgetModelProvider.noticeOf(context)?.model.errorText;
-    final isError =
-        LoginWidgetModelProvider.readOnly(context)?.model.isError ?? false;
+    final isError = model?.isError ?? false;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,29 +141,25 @@ class __LoginFormWidgetState extends State<_LoginFormWidget> {
           ),
           cursorColor: AppColors.logoBlue,
           cursorHeight: 20,
-          onChanged: (text) =>
-              LoginWidgetModelProvider.noticeOf(context)?.model.login = text,
+          onChanged: (text) => model?.login = text,
           decoration: AppTextField.inputDecoration(
             hintText: 'Введите почту',
             isError: isError,
-            suffixIcon:
-                LoginWidgetModelProvider.readOnly(context)?.model.login == ''
-                    ? null
-                    : InkWell(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onTap: () {
-                          LoginWidgetModelProvider.noticeOf(context)
-                              ?.model
-                              .login = '';
-                          _loginTextController.text = '';
-                        },
-                        child: const Icon(
-                          Icons.highlight_off,
-                          color: AppColors.textFieldHint,
-                          size: 16,
-                        ),
-                      ),
+            suffixIcon: model?.login == ''
+                ? null
+                : InkWell(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () {
+                      model?.login = '';
+                      _loginTextController.text = '';
+                    },
+                    child: const Icon(
+                      Icons.highlight_off,
+                      color: AppColors.textFieldHint,
+                      size: 16,
+                    ),
+                  ),
           ),
           keyboardType: TextInputType.emailAddress,
         ),

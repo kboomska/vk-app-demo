@@ -4,6 +4,8 @@ import '/widgets/main_screen/main_screen_widget.dart';
 import '/theme/app_colors.dart';
 
 class HomeWidget extends StatefulWidget {
+  static const path = '/home';
+
   const HomeWidget({super.key});
 
   @override
