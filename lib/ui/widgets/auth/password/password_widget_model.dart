@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:vk_app/widgets/home/home_widget.dart';
+import 'package:vk_app/ui/navigation/main_navigation.dart';
 
 class PasswordWidgetModelProvider extends InheritedNotifier {
   final PasswordWidgetModel model;
@@ -84,9 +84,9 @@ class PasswordWidgetModel extends ChangeNotifier {
       _errorText = null;
       _isError = false;
 
-      // Navigator.of(context).pushReplacementNamed(HomeWidget.path);
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(HomeWidget.path, ModalRoute.withName('/'));
+      // Navigator.of(context).pushReplacementNamed(MainNavigationRouteNames.home);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          MainNavigationRouteNames.home, ModalRoute.withName('/'));
     } else {
       _errorText = 'Неверный пароль, проверьте правильность введенных данных';
       _isError = true;

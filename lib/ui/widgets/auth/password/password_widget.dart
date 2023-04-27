@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:vk_app/widgets/auth/password/password_widget_model.dart';
+import 'package:vk_app/ui/widgets/auth/password/password_widget_model.dart';
 import 'package:vk_app/theme/app_button_style.dart';
 import 'package:vk_app/theme/app_text_field.dart';
 import 'package:vk_app/theme/app_colors.dart';
 import 'package:vk_app/theme/icon_id.dart';
 
 class PasswordWidget extends StatefulWidget {
-  static const path = '/login/password';
-
   const PasswordWidget({super.key});
 
   @override

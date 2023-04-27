@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '/widgets/main_screen/main_screen_widget.dart';
-import '/theme/app_colors.dart';
+import 'package:vk_app/ui/widgets/posts/posts_widget.dart';
+import 'package:vk_app/theme/app_colors.dart';
 
 class HomeWidget extends StatefulWidget {
-  static const path = '/home';
-
   const HomeWidget({super.key});
 
   @override
@@ -72,7 +70,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       body: IndexedStack(
         index: _selectedTab,
         children: [
-          const MainScreenWidget(),
+          const PostsWidget(),
           Center(child: Text(_appBarOptions[1])),
           Center(child: Text(_appBarOptions[2])),
         ],

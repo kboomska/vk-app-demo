@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/resources/resources.dart';
+import 'package:vk_app/resources/resources.dart';
 
 class Post {
   final String author;
@@ -28,7 +28,7 @@ class Post {
   });
 }
 
-class PostDataModel extends ChangeNotifier {
+class PostsWidgetModel extends ChangeNotifier {
   var _posts = [
     Post(
       author: 'Другое кино',
@@ -177,10 +177,10 @@ class PostDataModel extends ChangeNotifier {
   }
 }
 
-class PostDataModelProvider extends InheritedNotifier<PostDataModel> {
-  final PostDataModel model;
+class PostsWidgetModelProvider extends InheritedNotifier<PostsWidgetModel> {
+  final PostsWidgetModel model;
 
-  const PostDataModelProvider({
+  const PostsWidgetModelProvider({
     super.key,
     required this.model,
     required Widget child,
@@ -189,16 +189,16 @@ class PostDataModelProvider extends InheritedNotifier<PostDataModel> {
           child: child,
         );
 
-  static PostDataModel? noticeOf(BuildContext context) {
+  static PostsWidgetModel? noticeOf(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<PostDataModelProvider>()
+        .dependOnInheritedWidgetOfExactType<PostsWidgetModelProvider>()
         ?.model;
   }
 
-  static PostDataModel? readOnly(BuildContext context) {
+  static PostsWidgetModel? readOnly(BuildContext context) {
     final widget = context
-        .getElementForInheritedWidgetOfExactType<PostDataModelProvider>()
+        .getElementForInheritedWidgetOfExactType<PostsWidgetModelProvider>()
         ?.widget;
-    return widget is PostDataModelProvider ? widget.notifier : null;
+    return widget is PostsWidgetModelProvider ? widget.notifier : null;
   }
 }

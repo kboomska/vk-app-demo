@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:vk_app/widgets/auth/login/login_widget_model.dart';
+import 'package:vk_app/ui/widgets/auth/login/login_widget_model.dart';
 import 'package:vk_app/theme/app_button_style.dart';
 import 'package:vk_app/theme/app_text_field.dart';
 import 'package:vk_app/theme/app_colors.dart';
 
 class LoginWidget extends StatefulWidget {
-  static const path = '/login';
-
   const LoginWidget({super.key});
 
   @override

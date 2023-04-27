@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 
-import '/widgets/provider/post_data_provider.dart';
-import '/theme/app_colors.dart';
+import 'package:vk_app/ui/widgets/posts/posts_widget_model.dart';
+import 'package:vk_app/theme/app_colors.dart';
 
-class MainScreenWidget extends StatefulWidget {
-  const MainScreenWidget({super.key});
+class PostsWidget extends StatefulWidget {
+  const PostsWidget({super.key});
 
   @override
-  State<MainScreenWidget> createState() => _MainScreenWidgetState();
+  State<PostsWidget> createState() => _PostsWidgetState();
 }
 
-class _MainScreenWidgetState extends State<MainScreenWidget> {
-  final model = PostDataModel();
+class _PostsWidgetState extends State<PostsWidget> {
+  final model = PostsWidgetModel();
 
   @override
   Widget build(BuildContext context) {
-    return PostDataModelProvider(
+    return PostsWidgetModelProvider(
       model: model,
       child: const ColoredBox(
         color: AppColors.mainBackgroundColor,
-        child: PostList(),
+        child: PostListWidget(),
       ),
     );
   }
 }
 
-class PostList extends StatelessWidget {
-  const PostList({
+class PostListWidget extends StatelessWidget {
+  const PostListWidget({
     super.key,
   });
 
@@ -34,28 +34,28 @@ class PostList extends StatelessWidget {
   Widget build(BuildContext context) {
     print('PostList build');
     return ListView.separated(
-      itemCount: PostDataModelProvider.noticeOf(context)?.posts.length ?? 0,
+      itemCount: PostsWidgetModelProvider.noticeOf(context)?.posts.length ?? 0,
       separatorBuilder: (context, index) => const SizedBox(
         height: 8,
       ),
       itemBuilder: (context, index) {
-        return PostCard(index: index);
+        return PostCardWidget(index: index);
       },
     );
   }
 }
 
-class PostCard extends StatelessWidget {
+class PostCardWidget extends StatelessWidget {
   final int index;
 
-  const PostCard({
+  const PostCardWidget({
     super.key,
     required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
-    final post = PostDataModelProvider.readOnly(context)!.posts[index];
+    final post = PostsWidgetModelProvider.readOnly(context)!.posts[index];
 
     print('PostCard build: $index');
     return DecoratedBox(
@@ -65,14 +65,14 @@ class PostCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          PostHeader(
+          PostCardHeaderWidget(
             avatar: post.avatar,
             author: post.author,
             date: post.date,
           ),
-          PostText(text: post.text),
-          PostMedia(media: post.media),
-          PostFooter(
+          PostCardTextWidget(text: post.text),
+          PostCardMediaWidget(media: post.media),
+          PostCardFooterWidget(
             index: index,
           ),
         ],
@@ -81,12 +81,12 @@ class PostCard extends StatelessWidget {
   }
 }
 
-class PostHeader extends StatelessWidget {
+class PostCardHeaderWidget extends StatelessWidget {
   final String avatar;
   final String author;
   final String date;
 
-  const PostHeader({
+  const PostCardHeaderWidget({
     super.key,
     required this.avatar,
     required this.author,
@@ -155,10 +155,10 @@ class PostHeader extends StatelessWidget {
   }
 }
 
-class PostText extends StatelessWidget {
+class PostCardTextWidget extends StatelessWidget {
   final String text;
 
-  const PostText({
+  const PostCardTextWidget({
     super.key,
     required this.text,
   });
@@ -182,10 +182,10 @@ class PostText extends StatelessWidget {
   }
 }
 
-class PostMedia extends StatelessWidget {
+class PostCardMediaWidget extends StatelessWidget {
   final String media;
 
-  const PostMedia({super.key, required this.media});
+  const PostCardMediaWidget({super.key, required this.media});
 
   @override
   Widget build(BuildContext context) {
@@ -199,29 +199,29 @@ class PostMedia extends StatelessWidget {
   }
 }
 
-class PostFooter extends StatelessWidget {
+class PostCardFooterWidget extends StatelessWidget {
   final int index;
 
-  const PostFooter({
+  const PostCardFooterWidget({
     super.key,
     required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
-    final post = PostDataModelProvider.readOnly(context)!.posts[index];
+    final post = PostsWidgetModelProvider.readOnly(context)!.posts[index];
     print('PostFooter build');
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
       child: Row(
         children: [
-          PostLikeButton(
+          PostCardLikeButton(
             index: index,
           ),
           const SizedBox(
             width: 8,
           ),
-          PostBottomButton(
+          PostCardBottomButton(
             buttonCounter: post.replies,
             buttonIcon: const Icon(
               Icons.messenger_outline_outlined,
@@ -232,7 +232,7 @@ class PostFooter extends StatelessWidget {
           const SizedBox(
             width: 8,
           ),
-          PostBottomButton(
+          PostCardBottomButton(
             buttonCounter: post.share,
             buttonIcon: const Icon(
               Icons.reply_rounded,
@@ -269,17 +269,17 @@ class PostFooter extends StatelessWidget {
   }
 }
 
-class PostLikeButton extends StatelessWidget {
+class PostCardLikeButton extends StatelessWidget {
   final int index;
 
-  const PostLikeButton({
+  const PostCardLikeButton({
     super.key,
     required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
-    final post = PostDataModelProvider.readOnly(context)!.posts[index];
+    final post = PostsWidgetModelProvider.readOnly(context)!.posts[index];
     final int reactions = post.reactions;
     final bool isLiked = post.isLiked;
 
@@ -287,7 +287,7 @@ class PostLikeButton extends StatelessWidget {
     return Material(
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
-        onTap: () => PostDataModelProvider.noticeOf(context)
+        onTap: () => PostsWidgetModelProvider.noticeOf(context)
             ?.onTapLikeButton(index: index),
         borderRadius: BorderRadius.circular(16),
         child: Container(
@@ -331,11 +331,11 @@ class PostLikeButton extends StatelessWidget {
   }
 }
 
-class PostBottomButton extends StatelessWidget {
+class PostCardBottomButton extends StatelessWidget {
   final int buttonCounter;
   final Icon buttonIcon;
 
-  const PostBottomButton({
+  const PostCardBottomButton({
     super.key,
     required this.buttonCounter,
     required this.buttonIcon,
