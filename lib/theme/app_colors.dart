@@ -42,4 +42,9 @@ abstract class AppColors {
   static const chatTextSubtitle = Color.fromRGBO(111, 119, 131, 1);
   static const chatDeleteAction = Color.fromRGBO(212, 82, 77, 1);
   static const chatActionIcon = Color.fromRGBO(69, 134, 227, 1);
+
+  static const closeIcon = Color.fromRGBO(131, 139, 151, 1);
+  static const closeIconBackground = Color.fromRGBO(239, 240, 241, 1);
+
+  
 }

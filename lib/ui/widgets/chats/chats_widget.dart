@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_slidable/flutter_slidable.dart';
+
+import 'package:vk_app/ui/navigation/main_navigation.dart';
 import 'package:vk_app/resources/resources.dart';
 import 'package:vk_app/theme/app_colors.dart';
 
@@ -40,6 +43,10 @@ class _ChatsWidgetState extends State<ChatsWidget> {
 class ChatsActionsWidget extends StatelessWidget {
   const ChatsActionsWidget({super.key});
 
+  void showForm(BuildContext context) {
+    Navigator.of(context).pushNamed(MainNavigationRouteNames.chatsForm);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -61,9 +68,7 @@ class ChatsActionsWidget extends StatelessWidget {
         InkWell(
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
-          onTap: () {
-            print('Create a new chat');
-          },
+          onTap: () => showForm(context),
           child: const Icon(
             Icons.create,
             color: AppColors.chatActionIcon,
