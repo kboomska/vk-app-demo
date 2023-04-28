@@ -1,24 +1,42 @@
 import 'package:flutter/material.dart';
 
+import 'package:vk_app/ui/widgets/chats_form/chats_form_widget_model.dart';
 import 'package:vk_app/theme/app_colors.dart';
 import 'package:vk_app/theme/app_text_field.dart';
 
-class ChatsFormWidget extends StatelessWidget {
+class ChatsFormWidget extends StatefulWidget {
   const ChatsFormWidget({super.key});
 
-  void closeForm(BuildContext context) {
-    Navigator.of(context).pop();
-  }
+  @override
+  State<ChatsFormWidget> createState() => _ChatsFormWidgetState();
+}
+
+class _ChatsFormWidgetState extends State<ChatsFormWidget> {
+  final _model = ChatsFormWidgetModel();
 
   @override
   Widget build(BuildContext context) {
+    return ChatsFormWidgetModelProvider(
+      model: _model,
+      child: const _ChatsFormWidgetBody(),
+    );
+  }
+}
+
+class _ChatsFormWidgetBody extends StatelessWidget {
+  const _ChatsFormWidgetBody({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final model = ChatsFormWidgetModelProvider.readOnly(context)?.model;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.appBackgroundColor,
         iconTheme: const IconThemeData(color: AppColors.iconBlue),
         elevation: 0,
         leading: InkWell(
-          onTap: () {},
+          onTap: () => model?.saveChat(context),
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
           child: const Align(
@@ -44,7 +62,7 @@ class ChatsFormWidget extends StatelessWidget {
           InkWell(
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
-            onTap: () => closeForm(context),
+            onTap: () => model?.closeForm(context),
             child: const CircleAvatar(
               radius: 12,
               backgroundColor: AppColors.closeIconBackground,
@@ -80,12 +98,15 @@ class _ChatNameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final model = ChatsFormWidgetModelProvider.readOnly(context)?.model;
+
     return TextField(
       autofocus: true,
       decoration: AppTextField.inputDecoration(
         hintText: 'Новый чат',
       ),
-      onEditingComplete: () {},
+      onEditingComplete: () => model?.saveChat(context),
+      onChanged: (value) => model?.chatName = value,
     );
   }
 }
