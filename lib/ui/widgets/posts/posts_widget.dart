@@ -15,11 +15,27 @@ class _PostsWidgetState extends State<PostsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return PostsWidgetModelProvider(
-      model: model,
-      child: const ColoredBox(
-        color: AppColors.mainBackgroundColor,
-        child: PostListWidget(),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.appBackgroundColor,
+        iconTheme: const IconThemeData(color: AppColors.iconBlue),
+        elevation: 1,
+        shadowColor: AppColors.mainAppBarShadowColor,
+        title: const Text(
+          'Главная',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 22,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+      body: PostsWidgetModelProvider(
+        model: model,
+        child: const ColoredBox(
+          color: AppColors.mainBackgroundColor,
+          child: PostListWidget(),
+        ),
       ),
     );
   }
@@ -132,7 +148,7 @@ class PostCardHeaderWidget extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.postDate,
+                  color: AppColors.postTextSubtitle,
                 ),
               ),
             ],

@@ -30,12 +30,16 @@ abstract class AppColors {
   static const bottomNavigationActive = Color.fromRGBO(63, 115, 198, 1);
 
   static const postAuthor = Color.fromRGBO(44, 45, 46, 1);
-  static const postDate = Color.fromRGBO(129, 140, 153, 1);
-  static const postText = Color.fromRGBO(0, 0, 0, 1);
+  static const postTextSubtitle = Color.fromRGBO(129, 140, 153, 1);
+  static const postTextTitle = Color.fromRGBO(0, 0, 0, 1);
   static const postActions = Color.fromRGBO(185, 193, 203, 1);
   static const postBottomButtonsBackground = Color.fromRGBO(245, 245, 245, 1);
   static const postBottomButtons = Color.fromRGBO(154, 162, 172, 1);
   static const postBottomViews = Color.fromRGBO(185, 193, 203, 1);
   static const postLikedButton = Color.fromRGBO(225, 65, 71, 1);
   static const postLikedButtonBackground = Color.fromRGBO(251, 237, 237, 1);
+
+  static const chatTextSubtitle = Color.fromRGBO(111, 119, 131, 1);
+  static const chatDeleteAction = Color.fromRGBO(212, 82, 77, 1);
+  static const chatActionIcon = Color.fromRGBO(69, 134, 227, 1);
 }

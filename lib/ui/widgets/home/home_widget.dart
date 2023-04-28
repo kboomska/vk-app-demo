@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:vk_app/ui/widgets/posts/posts_widget.dart';
+import 'package:vk_app/ui/widgets/chats/chats_widget.dart';
 import 'package:vk_app/theme/app_colors.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -15,7 +16,7 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   static const List<String> _appBarOptions = [
     'Главная',
-    'Сообщения',
+    'Мессенджер',
     'Настройки',
   ];
 
@@ -29,20 +30,20 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.appBackgroundColor,
-        iconTheme: const IconThemeData(color: AppColors.iconBlue),
-        elevation: 1,
-        shadowColor: AppColors.mainAppBarShadowColor,
-        title: Text(
-          _appBarOptions[_selectedTab],
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 22,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: AppColors.appBackgroundColor,
+      //   iconTheme: const IconThemeData(color: AppColors.iconBlue),
+      //   elevation: 1,
+      //   shadowColor: AppColors.mainAppBarShadowColor,
+      //   title: Text(
+      //     _appBarOptions[_selectedTab],
+      //     style: const TextStyle(
+      //       color: Colors.black,
+      //       fontSize: 22,
+      //       fontWeight: FontWeight.w500,
+      //     ),
+      //   ),
+      // ),
       backgroundColor: AppColors.appBackgroundColor,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTab,
@@ -71,7 +72,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         index: _selectedTab,
         children: [
           const PostsWidget(),
-          Center(child: Text(_appBarOptions[1])),
+          const ChatsWidget(),
           Center(child: Text(_appBarOptions[2])),
         ],
       ),
