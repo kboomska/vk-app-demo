@@ -5,9 +5,9 @@ import 'package:vk_app/ui/widgets/auth/login/login_widget.dart';
 import 'package:vk_app/ui/widgets/home/home_widget.dart';
 
 abstract class MainNavigationRouteNames {
-  static const login = '/login';
-  static const password = '/login/password';
-  static const home = '/home';
+  static const login = 'login';
+  static const password = 'login/password';
+  static const home = 'home';
 }
 
 class MainNavigation {
@@ -15,7 +15,20 @@ class MainNavigation {
 
   final routes = <String, Widget Function(BuildContext)>{
     MainNavigationRouteNames.login: (context) => const LoginWidget(),
-    MainNavigationRouteNames.password: (context) => const PasswordWidget(),
     MainNavigationRouteNames.home: (context) => const HomeWidget(),
   };
+
+  Route<Object> onGenerateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case MainNavigationRouteNames.password:
+        final login = settings.arguments as String;
+        return MaterialPageRoute(
+            builder: (context) => PasswordWidget(login: login));
+      default:
+        const widget = Text('Navigation Error!');
+        return MaterialPageRoute(
+          builder: (context) => widget,
+        );
+    }
+  }
 }

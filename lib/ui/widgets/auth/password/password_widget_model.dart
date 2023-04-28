@@ -84,7 +84,6 @@ class PasswordWidgetModel extends ChangeNotifier {
       _errorText = null;
       _isError = false;
 
-      // Navigator.of(context).pushReplacementNamed(MainNavigationRouteNames.home);
       Navigator.of(context).pushNamedAndRemoveUntil(
           MainNavigationRouteNames.home, ModalRoute.withName('/'));
     } else {

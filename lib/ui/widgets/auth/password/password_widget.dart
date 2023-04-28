@@ -7,22 +7,21 @@ import 'package:vk_app/theme/app_colors.dart';
 import 'package:vk_app/theme/icon_id.dart';
 
 class PasswordWidget extends StatefulWidget {
-  const PasswordWidget({super.key});
+  final String login;
+
+  const PasswordWidget({super.key, required this.login});
 
   @override
   State<PasswordWidget> createState() => _PasswordWidgetState();
 }
 
 class _PasswordWidgetState extends State<PasswordWidget> {
-  PasswordWidgetModel? _model;
+  late PasswordWidgetModel _model;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_model == null) {
-      final String login = ModalRoute.of(context)!.settings.arguments as String;
-      _model = PasswordWidgetModel(login: login);
-    }
+  void initState() {
+    super.initState();
+    _model = PasswordWidgetModel(login: widget.login);
   }
 
   @override
@@ -42,7 +41,7 @@ class _PasswordWidgetState extends State<PasswordWidget> {
           vertical: 16,
         ),
         child: PasswordWidgetModelProvider(
-          model: _model!,
+          model: _model,
           child: Column(
             children: const [
               _HeaderOfPasswordWidget(),
