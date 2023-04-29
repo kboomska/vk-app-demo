@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:vk_app/domain/entity/chat.dart';
 
-class ChatsFormWidgetModel {
+class ChatFormWidgetModel {
   var chatName = '';
 
   void saveChat(BuildContext context) async {
@@ -29,7 +29,7 @@ class ChatsFormWidgetModel {
 }
 
 class ChatsFormWidgetModelProvider extends InheritedWidget {
-  final ChatsFormWidgetModel model;
+  final ChatFormWidgetModel model;
 
   const ChatsFormWidgetModelProvider({
     super.key,

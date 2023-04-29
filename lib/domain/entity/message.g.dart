@@ -1,34 +1,34 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'chat.dart';
+part of 'message.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ChatAdapter extends TypeAdapter<Chat> {
+class MessageAdapter extends TypeAdapter<Message> {
   @override
-  final int typeId = 1;
+  final int typeId = 2;
 
   @override
-  Chat read(BinaryReader reader) {
+  Message read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Chat(
-      name: fields[0] as String,
-    )..messages = (fields[1] as HiveList?)?.castHiveList();
+    return Message(
+      text: fields[0] as String,
+    )..time = fields[1] as DateTime;
   }
 
   @override
-  void write(BinaryWriter writer, Chat obj) {
+  void write(BinaryWriter writer, Message obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.text)
       ..writeByte(1)
-      ..write(obj.messages);
+      ..write(obj.time);
   }
 
   @override
@@ -37,7 +37,7 @@ class ChatAdapter extends TypeAdapter<Chat> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ChatAdapter &&
+      other is MessageAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

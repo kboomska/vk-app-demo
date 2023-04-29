@@ -140,9 +140,7 @@ class _ChatsListRowWidget extends StatelessWidget {
         ],
       ),
       child: InkWell(
-        onTap: () {
-          print('Tap on chat');
-        },
+        onTap: () => model.showMessages(context, indexInList),
         child: SizedBox(
           height: 75,
           child: Padding(

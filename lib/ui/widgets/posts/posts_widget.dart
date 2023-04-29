@@ -48,7 +48,6 @@ class _PostListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('PostList build');
     return ListView.separated(
       itemCount: PostsWidgetModelProvider.noticeOf(context)?.posts.length ?? 0,
       separatorBuilder: (context, index) => const SizedBox(
@@ -73,7 +72,6 @@ class _PostCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final post = PostsWidgetModelProvider.readOnly(context)!.posts[index];
 
-    print('PostCard build: $index');
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.appBackgroundColor,
@@ -111,7 +109,6 @@ class _PostCardHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('PostHeader build');
     return Padding(
       padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
       child: Row(
@@ -181,7 +178,6 @@ class _PostCardTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('PostText build');
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 12, right: 12),
       child: Text(
@@ -205,7 +201,6 @@ class _PostCardMediaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('PostMedia build');
     return Padding(
       padding: const EdgeInsets.only(top: 12, bottom: 12),
       child: Image.asset(
@@ -226,7 +221,6 @@ class _PostCardFooterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final post = PostsWidgetModelProvider.readOnly(context)!.posts[index];
-    print('PostFooter build');
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
       child: Row(
@@ -299,7 +293,6 @@ class _PostCardLikeButton extends StatelessWidget {
     final int reactions = post.reactions;
     final bool isLiked = post.isLiked;
 
-    print('PostLikeButton build');
     return Material(
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
@@ -359,7 +352,6 @@ class _PostCardBottomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('PostBottomButton build');
     return Container(
       height: 32,
       decoration: BoxDecoration(

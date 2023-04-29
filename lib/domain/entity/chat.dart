@@ -7,6 +7,9 @@ class Chat {
   @HiveField(0)
   String name;
 
+  @HiveField(1)
+  HiveList? messages;
+
   Chat({
     required this.name,
   });

@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 
-import 'package:vk_app/ui/widgets/chats_form/chats_form_widget_model.dart';
+import 'package:vk_app/ui/widgets/chat_form/chat_form_widget_model.dart';
 import 'package:vk_app/theme/app_colors.dart';
 import 'package:vk_app/theme/app_text_field.dart';
 
-class ChatsFormWidget extends StatefulWidget {
-  const ChatsFormWidget({super.key});
+class ChatFormWidget extends StatefulWidget {
+  const ChatFormWidget({super.key});
 
   @override
-  State<ChatsFormWidget> createState() => _ChatsFormWidgetState();
+  State<ChatFormWidget> createState() => _ChatFormWidgetState();
 }
 
-class _ChatsFormWidgetState extends State<ChatsFormWidget> {
-  final _model = ChatsFormWidgetModel();
+class _ChatFormWidgetState extends State<ChatFormWidget> {
+  final _model = ChatFormWidgetModel();
 
   @override
   Widget build(BuildContext context) {
     return ChatsFormWidgetModelProvider(
       model: _model,
-      child: const _ChatsFormWidgetBody(),
+      child: const _ChatFormWidgetBody(),
     );
   }
 }
 
-class _ChatsFormWidgetBody extends StatelessWidget {
-  const _ChatsFormWidgetBody({super.key});
+class _ChatFormWidgetBody extends StatelessWidget {
+  const _ChatFormWidgetBody({super.key});
 
   @override
   Widget build(BuildContext context) {

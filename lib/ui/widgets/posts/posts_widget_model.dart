@@ -165,8 +165,6 @@ class PostsWidgetModel extends ChangeNotifier {
   List<Post> get posts => _posts;
 
   void onTapLikeButton({required int index}) {
-    print('Tap like button');
-
     _posts[index].isLiked = !_posts[index].isLiked;
     if (_posts[index].isLiked) {
       _posts[index].reactions += 1;

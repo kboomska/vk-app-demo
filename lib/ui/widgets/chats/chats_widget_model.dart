@@ -15,7 +15,20 @@ class ChatsWidgetModel extends ChangeNotifier {
   List<Chat> get chats => _chats.toList();
 
   void showForm(BuildContext context) {
-    Navigator.of(context).pushNamed(MainNavigationRouteNames.chatsForm);
+    Navigator.of(context).pushNamed(MainNavigationRouteNames.chatForm);
+  }
+
+  void showMessages(BuildContext context, int indexChat) async {
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter(ChatAdapter());
+    }
+
+    final box = await Hive.openBox<Chat>('chats_box');
+
+    final chatKey = box.keyAt(indexChat) as int;
+
+    Navigator.of(context)
+        .pushNamed(MainNavigationRouteNames.messages, arguments: chatKey);
   }
 
   void deleteChat(int indexChat) async {
