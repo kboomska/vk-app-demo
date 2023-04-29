@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
 
+import 'package:hive_flutter/hive_flutter.dart';
+
+import 'package:vk_app/domain/entity/chat.dart';
+
 class ChatsFormWidgetModel {
   var chatName = '';
 
-  void saveChat(BuildContext context) {
-    print(chatName);
+  void saveChat(BuildContext context) async {
+    if (chatName.isEmpty) return;
+
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter(ChatAdapter());
+    }
+
+    final box = await Hive.openBox<Chat>('chats_box');
+
+    final chat = Chat(name: chatName);
+
+    await box.add(chat);
+
+    closeForm(context);
   }
 
   void closeForm(BuildContext context) {

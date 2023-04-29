@@ -30,20 +30,6 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: AppColors.appBackgroundColor,
-      //   iconTheme: const IconThemeData(color: AppColors.iconBlue),
-      //   elevation: 1,
-      //   shadowColor: AppColors.mainAppBarShadowColor,
-      //   title: Text(
-      //     _appBarOptions[_selectedTab],
-      //     style: const TextStyle(
-      //       color: Colors.black,
-      //       fontSize: 22,
-      //       fontWeight: FontWeight.w500,
-      //     ),
-      //   ),
-      // ),
       backgroundColor: AppColors.appBackgroundColor,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTab,

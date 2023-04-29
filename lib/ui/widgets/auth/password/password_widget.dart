@@ -122,10 +122,10 @@ class _PasswordFormWidget extends StatefulWidget {
   const _PasswordFormWidget({super.key});
 
   @override
-  State<_PasswordFormWidget> createState() => __PasswordFormWidgetState();
+  State<_PasswordFormWidget> createState() => _PasswordFormWidgetState();
 }
 
-class __PasswordFormWidgetState extends State<_PasswordFormWidget> {
+class _PasswordFormWidgetState extends State<_PasswordFormWidget> {
   // final _passwordTextController = TextEditingController();
   final _passwordTextController =
       TextEditingController(text: 'admin'); // For testing only!

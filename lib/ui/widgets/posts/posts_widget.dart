@@ -34,15 +34,15 @@ class _PostsWidgetState extends State<PostsWidget> {
         model: model,
         child: const ColoredBox(
           color: AppColors.mainBackgroundColor,
-          child: PostListWidget(),
+          child: _PostListWidget(),
         ),
       ),
     );
   }
 }
 
-class PostListWidget extends StatelessWidget {
-  const PostListWidget({
+class _PostListWidget extends StatelessWidget {
+  const _PostListWidget({
     super.key,
   });
 
@@ -55,16 +55,16 @@ class PostListWidget extends StatelessWidget {
         height: 8,
       ),
       itemBuilder: (context, index) {
-        return PostCardWidget(index: index);
+        return _PostCardWidget(index: index);
       },
     );
   }
 }
 
-class PostCardWidget extends StatelessWidget {
+class _PostCardWidget extends StatelessWidget {
   final int index;
 
-  const PostCardWidget({
+  const _PostCardWidget({
     super.key,
     required this.index,
   });
@@ -81,14 +81,14 @@ class PostCardWidget extends StatelessWidget {
       ),
       child: Column(
         children: [
-          PostCardHeaderWidget(
+          _PostCardHeaderWidget(
             avatar: post.avatar,
             author: post.author,
             date: post.date,
           ),
-          PostCardTextWidget(text: post.text),
-          PostCardMediaWidget(media: post.media),
-          PostCardFooterWidget(
+          _PostCardTextWidget(text: post.text),
+          _PostCardMediaWidget(media: post.media),
+          _PostCardFooterWidget(
             index: index,
           ),
         ],
@@ -97,12 +97,12 @@ class PostCardWidget extends StatelessWidget {
   }
 }
 
-class PostCardHeaderWidget extends StatelessWidget {
+class _PostCardHeaderWidget extends StatelessWidget {
   final String avatar;
   final String author;
   final String date;
 
-  const PostCardHeaderWidget({
+  const _PostCardHeaderWidget({
     super.key,
     required this.avatar,
     required this.author,
@@ -171,10 +171,10 @@ class PostCardHeaderWidget extends StatelessWidget {
   }
 }
 
-class PostCardTextWidget extends StatelessWidget {
+class _PostCardTextWidget extends StatelessWidget {
   final String text;
 
-  const PostCardTextWidget({
+  const _PostCardTextWidget({
     super.key,
     required this.text,
   });
@@ -198,10 +198,10 @@ class PostCardTextWidget extends StatelessWidget {
   }
 }
 
-class PostCardMediaWidget extends StatelessWidget {
+class _PostCardMediaWidget extends StatelessWidget {
   final String media;
 
-  const PostCardMediaWidget({super.key, required this.media});
+  const _PostCardMediaWidget({super.key, required this.media});
 
   @override
   Widget build(BuildContext context) {
@@ -215,10 +215,10 @@ class PostCardMediaWidget extends StatelessWidget {
   }
 }
 
-class PostCardFooterWidget extends StatelessWidget {
+class _PostCardFooterWidget extends StatelessWidget {
   final int index;
 
-  const PostCardFooterWidget({
+  const _PostCardFooterWidget({
     super.key,
     required this.index,
   });
@@ -231,13 +231,13 @@ class PostCardFooterWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
       child: Row(
         children: [
-          PostCardLikeButton(
+          _PostCardLikeButton(
             index: index,
           ),
           const SizedBox(
             width: 8,
           ),
-          PostCardBottomButton(
+          _PostCardBottomButton(
             buttonCounter: post.replies,
             buttonIcon: const Icon(
               Icons.messenger_outline_outlined,
@@ -248,7 +248,7 @@ class PostCardFooterWidget extends StatelessWidget {
           const SizedBox(
             width: 8,
           ),
-          PostCardBottomButton(
+          _PostCardBottomButton(
             buttonCounter: post.share,
             buttonIcon: const Icon(
               Icons.reply_rounded,
@@ -285,10 +285,10 @@ class PostCardFooterWidget extends StatelessWidget {
   }
 }
 
-class PostCardLikeButton extends StatelessWidget {
+class _PostCardLikeButton extends StatelessWidget {
   final int index;
 
-  const PostCardLikeButton({
+  const _PostCardLikeButton({
     super.key,
     required this.index,
   });
@@ -347,11 +347,11 @@ class PostCardLikeButton extends StatelessWidget {
   }
 }
 
-class PostCardBottomButton extends StatelessWidget {
+class _PostCardBottomButton extends StatelessWidget {
   final int buttonCounter;
   final Icon buttonIcon;
 
-  const PostCardBottomButton({
+  const _PostCardBottomButton({
     super.key,
     required this.buttonCounter,
     required this.buttonIcon,

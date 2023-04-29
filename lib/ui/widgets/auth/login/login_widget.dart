@@ -114,10 +114,10 @@ class _LoginFormWidget extends StatefulWidget {
   const _LoginFormWidget({super.key});
 
   @override
-  State<_LoginFormWidget> createState() => __LoginFormWidgetState();
+  State<_LoginFormWidget> createState() => _LoginFormWidgetState();
 }
 
-class __LoginFormWidgetState extends State<_LoginFormWidget> {
+class _LoginFormWidgetState extends State<_LoginFormWidget> {
   // final _loginTextController = TextEditingController();
   final _loginTextController =
       TextEditingController(text: 'admin@mail.ru'); // For testing only!

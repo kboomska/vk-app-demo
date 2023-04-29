@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import 'package:vk_app/ui/navigation/main_navigation.dart';
+import 'package:vk_app/ui/widgets/chats/chats_widget_model.dart';
 import 'package:vk_app/resources/resources.dart';
 import 'package:vk_app/theme/app_colors.dart';
 
@@ -14,6 +14,22 @@ class ChatsWidget extends StatefulWidget {
 }
 
 class _ChatsWidgetState extends State<ChatsWidget> {
+  final _model = ChatsWidgetModel();
+
+  @override
+  Widget build(BuildContext context) {
+    return ChatsWidgetModelProvider(
+      model: _model,
+      child: const _ChatsWidgetBody(),
+    );
+  }
+}
+
+class _ChatsWidgetBody extends StatelessWidget {
+  const _ChatsWidgetBody({
+    super.key,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,22 +46,18 @@ class _ChatsWidgetState extends State<ChatsWidget> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        actions: const [ChatsActionsWidget()],
+        actions: const [_ChatsActionsWidget()],
       ),
       body: const ColoredBox(
         color: AppColors.appBackgroundColor,
-        child: ChatListWidget(),
+        child: _ChatListWidget(),
       ),
     );
   }
 }
 
-class ChatsActionsWidget extends StatelessWidget {
-  const ChatsActionsWidget({super.key});
-
-  void showForm(BuildContext context) {
-    Navigator.of(context).pushNamed(MainNavigationRouteNames.chatsForm);
-  }
+class _ChatsActionsWidget extends StatelessWidget {
+  const _ChatsActionsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +80,9 @@ class ChatsActionsWidget extends StatelessWidget {
         InkWell(
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
-          onTap: () => showForm(context),
+          onTap: () => ChatsWidgetModelProvider.readOnly(context)
+              ?.model
+              .showForm(context),
           child: const Icon(
             Icons.create,
             color: AppColors.chatActionIcon,
@@ -82,80 +96,97 @@ class ChatsActionsWidget extends StatelessWidget {
   }
 }
 
-class ChatListWidget extends StatelessWidget {
-  const ChatListWidget({super.key});
+class _ChatListWidget extends StatelessWidget {
+  const _ChatListWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final chatsCount =
+        ChatsWidgetModelProvider.noticeOf(context)?.model.chats.length ?? 0;
+
     return ListView.builder(
-      itemCount: 20,
+      itemCount: chatsCount,
       itemBuilder: (context, index) {
-        return Slidable(
-          endActionPane: ActionPane(
-            extentRatio: 0.25,
-            motion: const DrawerMotion(),
-            children: [
-              SlidableAction(
-                onPressed: (_) {
-                  print('Delete chat');
-                },
-                backgroundColor: AppColors.chatDeleteAction,
-                foregroundColor: AppColors.appBackgroundColor,
-                icon: Icons.delete,
-                label: 'Delete',
-              ),
-            ],
+        return _ChatsListRowWidget(indexInList: index);
+      },
+    );
+  }
+}
+
+class _ChatsListRowWidget extends StatelessWidget {
+  final int indexInList;
+  const _ChatsListRowWidget({
+    super.key,
+    required this.indexInList,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final model = ChatsWidgetModelProvider.readOnly(context)!.model;
+    final chat = model.chats[indexInList];
+
+    return Slidable(
+      endActionPane: ActionPane(
+        extentRatio: 0.25,
+        motion: const DrawerMotion(),
+        children: [
+          SlidableAction(
+            onPressed: (_) => model.deleteChat(indexInList),
+            backgroundColor: AppColors.chatDeleteAction,
+            foregroundColor: AppColors.appBackgroundColor,
+            icon: Icons.delete,
+            label: 'Delete',
           ),
-          child: InkWell(
-            onTap: () {
-              print('Tap on chat');
-            },
-            child: SizedBox(
-              height: 75,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
+        ],
+      ),
+      child: InkWell(
+        onTap: () {
+          print('Tap on chat');
+        },
+        child: SizedBox(
+          height: 75,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Image.asset(AppImages.chatAvatar),
+                ),
+                const SizedBox(width: 12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 60,
-                      height: 60,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
+                    Text(
+                      chat.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 17,
+                        color: AppColors.postTextTitle,
                       ),
-                      child: Image.asset(AppImages.chatAvatar),
                     ),
-                    const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          'Username',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 17,
-                            color: AppColors.postTextTitle,
-                          ),
-                        ),
-                        SizedBox(height: 6),
-                        Text(
-                          'Last message from user',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                            color: AppColors.chatTextSubtitle,
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: 6),
+                    const Text(
+                      'Last message from user',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                        color: AppColors.chatTextSubtitle,
+                      ),
                     ),
                   ],
                 ),
-              ),
+              ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
