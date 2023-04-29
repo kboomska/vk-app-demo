@@ -45,6 +45,48 @@ abstract class AppTextField {
     );
   }
 
+  static messageDecoration(
+      {bool isError = false, String? hintText, Widget? suffixIcon}) {
+    return InputDecoration(
+      hintText: hintText,
+      hintStyle: const TextStyle(
+        color: AppColors.textFieldHint,
+        fontSize: 16,
+      ),
+      filled: true,
+      fillColor: !isError
+          ? AppColors.textFieldEnabledFill
+          : AppColors.textFieldErrorFill,
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(22.0),
+        borderSide: BorderSide(
+          width: 1,
+          color: !isError
+              ? AppColors.textFieldEnabledBorder
+              : AppColors.textFieldErrorBorder,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(22.0),
+        borderSide: BorderSide(
+          width: 1,
+          color: !isError
+              ? AppColors.textFieldEnabledBorder
+              : AppColors.textFieldErrorBorder,
+        ),
+      ),
+      isCollapsed: true,
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 12.5,
+        vertical: 8.5,
+      ),
+      suffixIcon: suffixIcon,
+      suffixIconConstraints: BoxConstraints.tight(
+        const Size(36, 36),
+      ),
+    );
+  }
+
   static decoration({
     String? hintText,
     String? errorText,

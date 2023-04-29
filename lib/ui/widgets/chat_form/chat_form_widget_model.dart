@@ -28,10 +28,10 @@ class ChatFormWidgetModel {
   }
 }
 
-class ChatsFormWidgetModelProvider extends InheritedWidget {
+class ChatFormWidgetModelProvider extends InheritedWidget {
   final ChatFormWidgetModel model;
 
-  const ChatsFormWidgetModelProvider({
+  const ChatFormWidgetModelProvider({
     super.key,
     required this.model,
     required Widget child,
@@ -39,20 +39,20 @@ class ChatsFormWidgetModelProvider extends InheritedWidget {
           child: child,
         );
 
-  static ChatsFormWidgetModelProvider? noticeOf(BuildContext context) {
+  static ChatFormWidgetModelProvider? noticeOf(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<ChatsFormWidgetModelProvider>();
+        .dependOnInheritedWidgetOfExactType<ChatFormWidgetModelProvider>();
   }
 
-  static ChatsFormWidgetModelProvider? readOnly(BuildContext context) {
+  static ChatFormWidgetModelProvider? readOnly(BuildContext context) {
     final widget = context
-        .getElementForInheritedWidgetOfExactType<ChatsFormWidgetModelProvider>()
+        .getElementForInheritedWidgetOfExactType<ChatFormWidgetModelProvider>()
         ?.widget;
-    return widget is ChatsFormWidgetModelProvider ? widget : null;
+    return widget is ChatFormWidgetModelProvider ? widget : null;
   }
 
   @override
-  bool updateShouldNotify(ChatsFormWidgetModelProvider oldWidget) {
+  bool updateShouldNotify(ChatFormWidgetModelProvider oldWidget) {
     return false;
   }
 }

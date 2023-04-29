@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:vk_app/ui/widgets/message_form/message_form_widget.dart';
 import 'package:vk_app/ui/widgets/messages/messages_widget_model.dart';
 import 'package:vk_app/theme/app_colors.dart';
 
@@ -37,6 +38,7 @@ class _MessagesWidgetBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = MessagesWidgetModelProvider.noticeOf(context)?.model;
     final chatName = model?.chat?.name ?? 'DELETED';
+    final chatKey = model?.chatKey;
 
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +47,7 @@ class _MessagesWidgetBody extends StatelessWidget {
         elevation: 0,
         title: Text(
           chatName,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 18,
             fontWeight: FontWeight.w500,
@@ -70,7 +72,13 @@ class _MessagesWidgetBody extends StatelessWidget {
       ),
       body: ColoredBox(
         color: AppColors.appBackgroundColor,
-        child: Container(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(),
+            MessageFormWidget(chatKey: chatKey),
+          ],
+        ),
       ),
     );
   }

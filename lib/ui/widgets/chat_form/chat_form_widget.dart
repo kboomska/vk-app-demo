@@ -16,7 +16,7 @@ class _ChatFormWidgetState extends State<ChatFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ChatsFormWidgetModelProvider(
+    return ChatFormWidgetModelProvider(
       model: _model,
       child: const _ChatFormWidgetBody(),
     );
@@ -28,7 +28,7 @@ class _ChatFormWidgetBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = ChatsFormWidgetModelProvider.readOnly(context)?.model;
+    final model = ChatFormWidgetModelProvider.readOnly(context)?.model;
 
     return Scaffold(
       appBar: AppBar(
@@ -98,7 +98,7 @@ class _ChatNameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = ChatsFormWidgetModelProvider.readOnly(context)?.model;
+    final model = ChatFormWidgetModelProvider.readOnly(context)?.model;
 
     return TextField(
       autofocus: true,
