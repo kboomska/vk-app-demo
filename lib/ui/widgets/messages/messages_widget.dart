@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:vk_app/ui/widgets/message_form/message_form_widget.dart';
 import 'package:vk_app/ui/widgets/messages/messages_widget_model.dart';
@@ -75,9 +76,91 @@ class _MessagesWidgetBody extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Container(),
+            const _MessagesListWidget(),
             MessageFormWidget(chatKey: chatKey),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MessagesListWidget extends StatelessWidget {
+  const _MessagesListWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final messagesCount =
+        MessagesWidgetModelProvider.noticeOf(context)?.model.messages.length ??
+            0;
+
+    return Flexible(
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const BouncingScrollPhysics(),
+        itemCount: messagesCount,
+        itemBuilder: (context, index) {
+          return _MessageBubbleWidget(indexInList: index);
+        },
+      ),
+    );
+  }
+}
+
+class _MessageBubbleWidget extends StatelessWidget {
+  final int indexInList;
+  const _MessageBubbleWidget({
+    super.key,
+    required this.indexInList,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final model = MessagesWidgetModelProvider.readOnly(context)!.model;
+    final message = model.messages[indexInList];
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Slidable(
+        endActionPane: ActionPane(
+          extentRatio: 0.2,
+          motion: const DrawerMotion(),
+          children: [
+            SlidableAction(
+              onPressed: (_) => model.deleteMessage(indexInList),
+              backgroundColor: AppColors.appBackgroundColor,
+              foregroundColor: AppColors.chatDeleteAction,
+              icon: Icons.delete,
+              label: 'Delete',
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 300),
+              decoration: BoxDecoration(
+                color: Colors.blue[50],
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 10.0,
+                ),
+                child: Text(
+                  message.text,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );

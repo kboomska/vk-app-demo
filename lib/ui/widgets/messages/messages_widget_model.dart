@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 
+import 'package:vk_app/domain/entity/message.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:vk_app/domain/entity/chat.dart';
 
 class MessagesWidgetModel extends ChangeNotifier {
-  final chatKey;
+  final int chatKey;
   late final Future<Box<Chat>> _chatBox;
+  var _messages = <Message>[];
   Chat? _chat;
 
   MessagesWidgetModel({required this.chatKey}) {
     _setup();
   }
+
+  List<Message> get messages => _messages.toList();
 
   Chat? get chat => _chat;
 
@@ -21,13 +25,38 @@ class MessagesWidgetModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _setup() {
+  void _readMessages() {
+    _messages = _chat?.messages ?? <Message>[];
+    notifyListeners();
+  }
+
+  void _setupListenMessages() async {
+    final box = await _chatBox;
+
+    _readMessages();
+    box.listenable(keys: [chatKey]).addListener(_readMessages);
+  }
+
+  void deleteMessage(int indexMessage) async {
+    await _chat?.messages?.deleteFromHive(indexMessage);
+    await _chat?.save();
+  }
+
+  void _setup() async {
     if (!Hive.isAdapterRegistered(1)) {
       Hive.registerAdapter(ChatAdapter());
     }
 
     _chatBox = Hive.openBox<Chat>('chats_box');
+
+    if (!Hive.isAdapterRegistered(2)) {
+      Hive.registerAdapter(MessageAdapter());
+    }
+
+    await Hive.openBox<Message>('messages_box');
+
     _loadChat();
+    _setupListenMessages();
   }
 }
 

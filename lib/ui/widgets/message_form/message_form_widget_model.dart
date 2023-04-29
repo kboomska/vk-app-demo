@@ -6,7 +6,7 @@ import 'package:vk_app/domain/entity/message.dart';
 import 'package:vk_app/domain/entity/chat.dart';
 
 class MessageFormWidgetModel {
-  final chatKey;
+  final int chatKey;
   var messageText = '';
 
   MessageFormWidgetModel({required this.chatKey});

@@ -5,7 +5,7 @@ import 'package:vk_app/domain/entity/message.dart';
 part 'chat.g.dart';
 
 @HiveType(typeId: 1)
-class Chat {
+class Chat extends HiveObject {
   @HiveField(0)
   String name;
 
@@ -19,5 +19,6 @@ class Chat {
   void addMessage(Box<Message> box, Message message) {
     messages ??= HiveList(box);
     messages?.add(message);
+    save();
   }
 }
