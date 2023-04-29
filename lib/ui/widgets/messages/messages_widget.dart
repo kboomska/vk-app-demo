@@ -96,8 +96,9 @@ class _MessagesListWidget extends StatelessWidget {
 
     return Flexible(
       child: ListView.builder(
-        shrinkWrap: true,
-        physics: const BouncingScrollPhysics(),
+        // shrinkWrap: true,
+        // reverse: true,
+        // physics: const BouncingScrollPhysics(),
         itemCount: messagesCount,
         itemBuilder: (context, index) {
           return _MessageBubbleWidget(indexInList: index);

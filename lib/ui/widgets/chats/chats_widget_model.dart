@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:vk_app/ui/navigation/main_navigation.dart';
+import 'package:vk_app/domain/entity/message.dart';
 import 'package:vk_app/domain/entity/chat.dart';
 
 class ChatsWidgetModel extends ChangeNotifier {
@@ -38,6 +39,7 @@ class ChatsWidgetModel extends ChangeNotifier {
 
     final box = await Hive.openBox<Chat>('chats_box');
 
+    await box.getAt(indexChat)?.messages?.deleteAllFromHive();
     await box.deleteAt(indexChat);
   }
 
@@ -52,6 +54,12 @@ class ChatsWidgetModel extends ChangeNotifier {
     }
 
     final box = await Hive.openBox<Chat>('chats_box');
+
+    if (!Hive.isAdapterRegistered(2)) {
+      Hive.registerAdapter(MessageAdapter());
+    }
+
+    await Hive.openBox<Message>('messages_box');
 
     _readChatsFromHive(box);
 
