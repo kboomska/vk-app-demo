@@ -12,7 +12,7 @@ class ChatFormWidgetModel {
     final box = await BoxManager.instance.openChatBox();
     final chat = Chat(name: chatName);
     await box.add(chat);
-    // await BoxManager.instance.closeBox(box);
+    await BoxManager.instance.closeBox(box);
 
     closeForm(context);
   }
