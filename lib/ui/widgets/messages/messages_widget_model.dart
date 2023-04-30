@@ -26,7 +26,7 @@ class MessagesWidgetModel extends ChangeNotifier {
   }
 
   void _readMessages() {
-    _messages = _chat?.messages ?? <Message>[];
+    _messages = (_chat?.messages ?? <Message>[]).reversed.toList();
     notifyListeners();
   }
 
@@ -38,7 +38,8 @@ class MessagesWidgetModel extends ChangeNotifier {
   }
 
   void deleteMessage(int indexMessage) async {
-    await _chat?.messages?.deleteFromHive(indexMessage);
+    final messagesCount = _chat?.messages?.length ?? 0;
+    await _chat?.messages?.deleteFromHive(messagesCount - indexMessage - 1);
     await _chat?.save();
   }
 

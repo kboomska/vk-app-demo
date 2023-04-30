@@ -96,9 +96,8 @@ class _MessagesListWidget extends StatelessWidget {
 
     return Flexible(
       child: ListView.builder(
-        // shrinkWrap: true,
-        // reverse: true,
-        // physics: const BouncingScrollPhysics(),
+        reverse: true,
+        primary: false,
         itemCount: messagesCount,
         itemBuilder: (context, index) {
           return _MessageBubbleWidget(indexInList: index);
@@ -119,6 +118,7 @@ class _MessageBubbleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = MessagesWidgetModelProvider.readOnly(context)!.model;
     final message = model.messages[indexInList];
+    final time = '${message.time.hour}:${message.time.minute}';
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
@@ -143,22 +143,52 @@ class _MessageBubbleWidget extends StatelessWidget {
             child: Container(
               constraints: const BoxConstraints(maxWidth: 300),
               decoration: BoxDecoration(
-                color: Colors.blue[50],
+                color: AppColors.messageBubbleBackground,
                 borderRadius: BorderRadius.circular(16.0),
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 10.0,
-                ),
-                child: Text(
-                  message.text,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                      vertical: 10.0,
+                    ),
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '${message.text} ',
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          TextSpan(
+                            text: time,
+                            style: const TextStyle(
+                              color: Colors.transparent,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                  Positioned(
+                    right: 10,
+                    bottom: 5,
+                    child: Text(
+                      time,
+                      style: const TextStyle(
+                        color: AppColors.messageBubbleTimeText,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
           ),

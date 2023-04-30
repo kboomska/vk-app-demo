@@ -46,5 +46,6 @@ abstract class AppColors {
   static const closeIcon = Color.fromRGBO(131, 139, 151, 1);
   static const closeIconBackground = Color.fromRGBO(239, 240, 241, 1);
 
-  
+  static const messageBubbleBackground = Color.fromRGBO(222, 243, 254, 1);
+  static const messageBubbleTimeText = Color.fromRGBO(74, 142, 247, 1);
 }
