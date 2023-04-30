@@ -38,6 +38,12 @@ class _MessagesWidgetState extends State<MessagesWidget> {
       child: const _MessagesWidgetBody(),
     );
   }
+
+  @override
+  void dispose() {
+    _model.dispose();
+    super.dispose();
+  }
 }
 
 class _MessagesWidgetBody extends StatelessWidget {

@@ -15,6 +15,7 @@ class MessageFormWidgetModel {
     final message = Message(text: messageText);
     final box = await BoxManager.instance.openMessagesBox(chatKey);
     await box.add(message);
+    // await BoxManager.instance.closeBox(box);
 
     messageText = '';
   }

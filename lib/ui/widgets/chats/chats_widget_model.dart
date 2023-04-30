@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
@@ -9,6 +10,7 @@ import 'package:vk_app/domain/entity/chat.dart';
 
 class ChatsWidgetModel extends ChangeNotifier {
   late final Future<Box<Chat>> _box;
+  ValueListenable<Object>? _listenableBox;
   var _chats = <Chat>[];
 
   ChatsWidgetModel() {
@@ -54,7 +56,16 @@ class ChatsWidgetModel extends ChangeNotifier {
     _box = BoxManager.instance.openChatBox();
 
     await _readChatsFromHive();
-    (await _box).listenable().addListener(_readChatsFromHive);
+
+    _listenableBox = (await _box).listenable();
+    _listenableBox?.addListener(_readChatsFromHive);
+  }
+
+  @override
+  void dispose() async {
+    _listenableBox?.removeListener(_readChatsFromHive);
+    await BoxManager.instance.closeBox(await _box);
+    super.dispose();
   }
 }
 

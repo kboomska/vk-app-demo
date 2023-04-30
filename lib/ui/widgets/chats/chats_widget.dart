@@ -23,6 +23,12 @@ class _ChatsWidgetState extends State<ChatsWidget> {
       child: const _ChatsWidgetBody(),
     );
   }
+
+  @override
+  void dispose() {
+    _model.dispose();
+    super.dispose();
+  }
 }
 
 class _ChatsWidgetBody extends StatelessWidget {

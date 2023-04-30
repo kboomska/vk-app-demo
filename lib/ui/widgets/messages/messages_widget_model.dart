@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:vk_app/ui/widgets/messages/messages_widget.dart';
@@ -8,6 +9,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 class MessagesWidgetModel extends ChangeNotifier {
   final MessagesWidgetConfiguration configuration;
   late final Future<Box<Message>> _box;
+  ValueListenable<Object>? _listenableBox;
+
   var _messages = <Message>[];
 
   MessagesWidgetModel({required this.configuration}) {
@@ -30,7 +33,16 @@ class MessagesWidgetModel extends ChangeNotifier {
     _box = BoxManager.instance.openMessagesBox(configuration.chatKey);
 
     await _readMessagesFromHive();
-    (await _box).listenable().addListener(_readMessagesFromHive);
+
+    _listenableBox = (await _box).listenable();
+    _listenableBox?.addListener(_readMessagesFromHive);
+  }
+
+  @override
+  void dispose() async {
+    _listenableBox?.removeListener(_readMessagesFromHive);
+    await BoxManager.instance.closeBox(await _box);
+    super.dispose();
   }
 }
 
