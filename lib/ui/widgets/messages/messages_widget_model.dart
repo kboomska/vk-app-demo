@@ -1,63 +1,36 @@
 import 'package:flutter/material.dart';
 
+import 'package:vk_app/ui/widgets/messages/messages_widget.dart';
+import 'package:vk_app/domain/data_provider/box_manager.dart';
 import 'package:vk_app/domain/entity/message.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:vk_app/domain/entity/chat.dart';
 
 class MessagesWidgetModel extends ChangeNotifier {
-  final int chatKey;
-  late final Future<Box<Chat>> _chatsBox;
+  final MessagesWidgetConfiguration configuration;
+  late final Future<Box<Message>> _box;
   var _messages = <Message>[];
-  Chat? _chat;
 
-  MessagesWidgetModel({required this.chatKey}) {
+  MessagesWidgetModel({required this.configuration}) {
     _setup();
   }
 
   List<Message> get messages => _messages.toList();
 
-  Chat? get chat => _chat;
+  Future<void> deleteMessage(int indexMessage) async {
+    final messageLastIndex = _messages.length - 1;
+    await (await _box).deleteAt(messageLastIndex - indexMessage);
+  }
 
-  void _loadChat() async {
-    final box = await _chatsBox;
-
-    _chat = box.get(chatKey);
+  Future<void> _readMessagesFromHive() async {
+    _messages = (await _box).values.toList().reversed.toList();
     notifyListeners();
   }
 
-  void _readMessages() {
-    _messages = (_chat?.messages ?? <Message>[]).reversed.toList();
-    notifyListeners();
-  }
+  Future<void> _setup() async {
+    _box = BoxManager.instance.openMessagesBox(configuration.chatKey);
 
-  void _setupListenMessages() async {
-    final box = await _chatsBox;
-
-    _readMessages();
-    box.listenable(keys: [chatKey]).addListener(_readMessages);
-  }
-
-  void deleteMessage(int indexMessage) async {
-    final messagesCount = _chat?.messages?.length ?? 0;
-    await _chat?.messages?.deleteFromHive(messagesCount - indexMessage - 1);
-    await _chat?.save();
-  }
-
-  void _setup() async {
-    if (!Hive.isAdapterRegistered(1)) {
-      Hive.registerAdapter(ChatAdapter());
-    }
-
-    _chatsBox = Hive.openBox<Chat>('chats_box');
-
-    if (!Hive.isAdapterRegistered(2)) {
-      Hive.registerAdapter(MessageAdapter());
-    }
-
-    await Hive.openBox<Message>('messages_box');
-
-    _loadChat();
-    _setupListenMessages();
+    await _readMessagesFromHive();
+    (await _box).listenable().addListener(_readMessagesFromHive);
   }
 }
 

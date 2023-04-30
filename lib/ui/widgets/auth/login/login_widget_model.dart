@@ -64,13 +64,10 @@ class LoginWidgetModel extends ChangeNotifier {
     } else if (login == '' || login == null) {
       _errorText = 'Не указана почта';
       _isError = true;
-      print('Пустое поле ввода');
     } else {
       _errorText = 'Неверный адрес почты';
       _isError = true;
-      print('Ошибка при вводе почты');
     }
-
     notifyListeners();
   }
 

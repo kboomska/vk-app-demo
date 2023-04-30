@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:vk_app/ui/widgets/message_form/message_form_widget.dart';
 import 'package:vk_app/ui/widgets/messages/messages_widget_model.dart';
 import 'package:vk_app/theme/app_colors.dart';
 
-class MessagesWidget extends StatefulWidget {
+class MessagesWidgetConfiguration {
   final int chatKey;
+  final String title;
 
-  const MessagesWidget({super.key, required this.chatKey});
+  MessagesWidgetConfiguration(this.chatKey, this.title);
+}
+
+class MessagesWidget extends StatefulWidget {
+  final MessagesWidgetConfiguration configuration;
+
+  const MessagesWidget({super.key, required this.configuration});
 
   @override
   State<MessagesWidget> createState() => _MessagesWidgetState();
@@ -20,7 +28,7 @@ class _MessagesWidgetState extends State<MessagesWidget> {
   @override
   void initState() {
     super.initState();
-    _model = MessagesWidgetModel(chatKey: widget.chatKey);
+    _model = MessagesWidgetModel(configuration: widget.configuration);
   }
 
   @override
@@ -38,8 +46,8 @@ class _MessagesWidgetBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = MessagesWidgetModelProvider.noticeOf(context)?.model;
-    final chatName = model?.chat?.name ?? 'DELETED';
-    final chatKey = model?.chatKey;
+    final chatName = model?.configuration.title ?? 'DELETED';
+    final chatKey = model?.configuration.chatKey;
 
     return Scaffold(
       appBar: AppBar(

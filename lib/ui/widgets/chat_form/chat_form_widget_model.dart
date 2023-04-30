@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:hive_flutter/hive_flutter.dart';
-
+import 'package:vk_app/domain/data_provider/box_manager.dart';
 import 'package:vk_app/domain/entity/chat.dart';
 
 class ChatFormWidgetModel {
@@ -10,14 +9,8 @@ class ChatFormWidgetModel {
   void saveChat(BuildContext context) async {
     if (chatName.isEmpty) return;
 
-    if (!Hive.isAdapterRegistered(1)) {
-      Hive.registerAdapter(ChatAdapter());
-    }
-
-    final box = await Hive.openBox<Chat>('chats_box');
-
+    final box = await BoxManager.instance.openChatBox();
     final chat = Chat(name: chatName);
-
     await box.add(chat);
 
     closeForm(context);

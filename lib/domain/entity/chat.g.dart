@@ -18,17 +18,15 @@ class ChatAdapter extends TypeAdapter<Chat> {
     };
     return Chat(
       name: fields[0] as String,
-    )..messages = (fields[1] as HiveList?)?.castHiveList();
+    );
   }
 
   @override
   void write(BinaryWriter writer, Chat obj) {
     writer
-      ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.messages);
+      ..writeByte(0)
+      ..write(obj.name);
   }
 
   @override

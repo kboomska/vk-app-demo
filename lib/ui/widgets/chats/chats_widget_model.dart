@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'package:vk_app/ui/widgets/messages/messages_widget.dart';
 import 'package:vk_app/domain/data_provider/box_manager.dart';
 import 'package:vk_app/ui/navigation/main_navigation.dart';
 import 'package:vk_app/domain/entity/chat.dart';
@@ -21,16 +22,26 @@ class ChatsWidgetModel extends ChangeNotifier {
   }
 
   Future<void> showMessages(BuildContext context, int indexChat) async {
-    final chatKey = (await _box).keyAt(indexChat) as int;
+    final chat = (await _box).getAt(indexChat);
 
-    Navigator.of(context)
-        .pushNamed(MainNavigationRouteNames.messages, arguments: chatKey);
+    if (chat != null) {
+      final configuration = MessagesWidgetConfiguration(
+        chat.key as int,
+        chat.name,
+      );
+
+      Navigator.of(context).pushNamed(MainNavigationRouteNames.messages,
+          arguments: configuration);
+    }
   }
 
   Future<void> deleteChat(int indexChat) async {
     final box = await _box;
 
-    await box.getAt(indexChat)?.messages?.deleteAllFromHive();
+    final chatKey = (await _box).keyAt(indexChat) as int;
+    final messagesBoxName = BoxManager.instance.makeMessagesBoxName(chatKey);
+    await Hive.deleteBoxFromDisk(messagesBoxName);
+
     await box.deleteAt(indexChat);
   }
 
@@ -41,8 +52,6 @@ class ChatsWidgetModel extends ChangeNotifier {
 
   Future<void> _setup() async {
     _box = BoxManager.instance.openChatBox();
-
-    await BoxManager.instance.openMessagesBox();
 
     await _readChatsFromHive();
     (await _box).listenable().addListener(_readChatsFromHive);

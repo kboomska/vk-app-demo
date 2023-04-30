@@ -30,9 +30,9 @@ class MainNavigation {
         return MaterialPageRoute(
             builder: (context) => PasswordWidget(login: login));
       case MainNavigationRouteNames.messages:
-        final chatKey = settings.arguments as int;
+        final configuration = settings.arguments as MessagesWidgetConfiguration;
         return MaterialPageRoute(
-            builder: (context) => MessagesWidget(chatKey: chatKey));
+            builder: (context) => MessagesWidget(configuration: configuration));
       default:
         const widget = Text('Navigation Error!');
         return MaterialPageRoute(

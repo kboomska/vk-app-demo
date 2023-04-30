@@ -89,7 +89,6 @@ class PasswordWidgetModel extends ChangeNotifier {
     } else {
       _errorText = 'Неверный пароль, проверьте правильность введенных данных';
       _isError = true;
-      print('Ошибка при вводе пароля');
     }
     notifyListeners();
   }
