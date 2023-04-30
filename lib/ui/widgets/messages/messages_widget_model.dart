@@ -6,7 +6,7 @@ import 'package:vk_app/domain/entity/chat.dart';
 
 class MessagesWidgetModel extends ChangeNotifier {
   final int chatKey;
-  late final Future<Box<Chat>> _chatBox;
+  late final Future<Box<Chat>> _chatsBox;
   var _messages = <Message>[];
   Chat? _chat;
 
@@ -19,7 +19,7 @@ class MessagesWidgetModel extends ChangeNotifier {
   Chat? get chat => _chat;
 
   void _loadChat() async {
-    final box = await _chatBox;
+    final box = await _chatsBox;
 
     _chat = box.get(chatKey);
     notifyListeners();
@@ -31,7 +31,7 @@ class MessagesWidgetModel extends ChangeNotifier {
   }
 
   void _setupListenMessages() async {
-    final box = await _chatBox;
+    final box = await _chatsBox;
 
     _readMessages();
     box.listenable(keys: [chatKey]).addListener(_readMessages);
@@ -48,7 +48,7 @@ class MessagesWidgetModel extends ChangeNotifier {
       Hive.registerAdapter(ChatAdapter());
     }
 
-    _chatBox = Hive.openBox<Chat>('chats_box');
+    _chatsBox = Hive.openBox<Chat>('chats_box');
 
     if (!Hive.isAdapterRegistered(2)) {
       Hive.registerAdapter(MessageAdapter());

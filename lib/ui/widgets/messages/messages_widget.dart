@@ -118,7 +118,8 @@ class _MessageBubbleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = MessagesWidgetModelProvider.readOnly(context)!.model;
     final message = model.messages[indexInList];
-    final time = '${message.time.hour}:${message.time.minute}';
+    final time = message.time.toIso8601String().split(RegExp(r'[T:]'));
+    final timeString = '${time[1]}:${time[2]}';
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
@@ -157,7 +158,7 @@ class _MessageBubbleWidget extends StatelessWidget {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: '${message.text} ',
+                            text: '${message.text}  ',
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
@@ -165,10 +166,10 @@ class _MessageBubbleWidget extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: time,
+                            text: timeString,
                             style: const TextStyle(
                               color: Colors.transparent,
-                              fontSize: 10,
+                              fontSize: 11,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
@@ -180,7 +181,7 @@ class _MessageBubbleWidget extends StatelessWidget {
                     right: 10,
                     bottom: 5,
                     child: Text(
-                      time,
+                      timeString,
                       style: const TextStyle(
                         color: AppColors.messageBubbleTimeText,
                         fontSize: 11,
