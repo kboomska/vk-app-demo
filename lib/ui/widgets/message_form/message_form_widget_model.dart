@@ -3,13 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:vk_app/domain/data_provider/box_manager.dart';
 import 'package:vk_app/domain/entity/message.dart';
 
-class MessageFormWidgetModel {
+class MessageFormWidgetModel extends ChangeNotifier {
   final int chatKey;
-  var messageText = '';
+  var _messageText = '';
+
+  bool get isMessage => _messageText.isNotEmpty;
+  bool get isSpaceOnly => _messageText.trim().isEmpty;
 
   MessageFormWidgetModel({required this.chatKey});
 
+  set messageText(String value) {
+    _messageText = value;
+
+    notifyListeners();
+  }
+
   void saveMessage(BuildContext context) async {
+    final messageText = _messageText.trim();
     if (messageText.isEmpty) return;
 
     final message = Message(text: messageText);
@@ -17,7 +27,8 @@ class MessageFormWidgetModel {
     await box.add(message);
     await BoxManager.instance.closeBox(box);
 
-    messageText = '';
+    _messageText = '';
+    notifyListeners();
   }
 
   void closeForm(BuildContext context) {
@@ -25,7 +36,7 @@ class MessageFormWidgetModel {
   }
 }
 
-class MessageFormWidgetModelProvider extends InheritedWidget {
+class MessageFormWidgetModelProvider extends InheritedNotifier {
   final MessageFormWidgetModel model;
 
   const MessageFormWidgetModelProvider({
@@ -33,6 +44,7 @@ class MessageFormWidgetModelProvider extends InheritedWidget {
     required this.model,
     required Widget child,
   }) : super(
+          notifier: model,
           child: child,
         );
 

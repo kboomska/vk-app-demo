@@ -31,15 +31,21 @@ class _MessageFormWidgetState extends State<MessageFormWidget> {
   }
 }
 
-class _MessageFormWidgetBody extends StatelessWidget {
+class _MessageFormWidgetBody extends StatefulWidget {
   const _MessageFormWidgetBody({
     super.key,
   });
 
   @override
+  State<_MessageFormWidgetBody> createState() => _MessageFormWidgetBodyState();
+}
+
+class _MessageFormWidgetBodyState extends State<_MessageFormWidgetBody> {
+  final messageTextController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
-    final messageTextController = TextEditingController();
-    final model = MessageFormWidgetModelProvider.readOnly(context)?.model;
+    final model = MessageFormWidgetModelProvider.noticeOf(context)?.model;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -47,6 +53,7 @@ class _MessageFormWidgetBody extends StatelessWidget {
         vertical: 8.0,
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Flexible(
             child: TextField(
@@ -63,24 +70,28 @@ class _MessageFormWidgetBody extends StatelessWidget {
               onChanged: (value) => model?.messageText = value,
             ),
           ),
-          const SizedBox(width: 10),
-          InkWell(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            onTap: () {
-              model?.saveMessage(context);
-              messageTextController.text = '';
-            },
-            child: const CircleAvatar(
-              radius: 18,
-              backgroundColor: AppColors.chatActionIcon,
-              child: Icon(
-                Icons.arrow_upward_rounded,
-                size: 24,
-                color: AppColors.appBackgroundColor,
+          if (model?.isMessage == true) ...[
+            const SizedBox(width: 10),
+            InkWell(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onTap: () {
+                if (model?.isSpaceOnly == false) {
+                  model?.saveMessage(context);
+                  messageTextController.text = '';
+                }
+              },
+              child: const CircleAvatar(
+                radius: 18,
+                backgroundColor: AppColors.chatActionIcon,
+                child: Icon(
+                  Icons.arrow_upward_rounded,
+                  size: 24,
+                  color: AppColors.appBackgroundColor,
+                ),
               ),
             ),
-          ),
+          ],
         ],
       ),
     );
