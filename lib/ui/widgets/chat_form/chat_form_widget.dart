@@ -28,27 +28,39 @@ class _ChatFormWidgetBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = ChatFormWidgetModelProvider.readOnly(context)?.model;
+    final model = ChatFormWidgetModelProvider.noticeOf(context)?.model;
+
+    InkWell doneActive = InkWell(
+      onTap: () => model?.saveChat(context),
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      child: const Align(
+        alignment: Alignment.centerRight,
+        child: Text(
+          'Готово',
+          style: TextStyle(
+            color: AppColors.linkBlue,
+          ),
+        ),
+      ),
+    );
+
+    const doneInactive = Align(
+      alignment: Alignment.centerRight,
+      child: Text(
+        'Готово',
+        style: TextStyle(
+          color: AppColors.closeIcon,
+        ),
+      ),
+    );
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.appBackgroundColor,
         iconTheme: const IconThemeData(color: AppColors.iconBlue),
         elevation: 0,
-        leading: InkWell(
-          onTap: () => model?.saveChat(context),
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          child: const Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              'Готово',
-              style: TextStyle(
-                color: AppColors.linkBlue,
-              ),
-            ),
-          ),
-        ),
+        leading: model?.isValid == true ? doneActive : doneInactive,
         centerTitle: true,
         title: const Text(
           'Начать общение',
@@ -98,15 +110,35 @@ class _ChatNameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = ChatFormWidgetModelProvider.readOnly(context)?.model;
+    final model = ChatFormWidgetModelProvider.noticeOf(context)?.model;
+    final errorText = model?.errorText;
 
-    return TextField(
-      autofocus: true,
-      decoration: AppTextField.inputDecoration(
-        hintText: 'Новый чат',
-      ),
-      onEditingComplete: () => model?.saveChat(context),
-      onChanged: (value) => model?.chatName = value,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          autofocus: true,
+          decoration: AppTextField.inputDecoration(
+            hintText: 'Новый чат',
+            isError: errorText != null,
+          ),
+          onEditingComplete: () => model?.saveChat(context),
+          onChanged: (value) => model?.chatName = value,
+        ),
+        if (errorText != null) ...[
+          const SizedBox(
+            height: 8,
+          ),
+          Text(
+            errorText,
+            style: const TextStyle(
+              fontSize: 14,
+              color: AppColors.textFieldErrorText,
+            ),
+          ),
+        ],
+      ],
     );
   }
 }

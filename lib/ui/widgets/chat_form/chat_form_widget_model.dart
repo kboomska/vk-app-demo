@@ -3,11 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:vk_app/domain/data_provider/box_manager.dart';
 import 'package:vk_app/domain/entity/chat.dart';
 
-class ChatFormWidgetModel {
-  var chatName = '';
+class ChatFormWidgetModel extends ChangeNotifier {
+  String _chatName = '';
+  String? errorText;
+
+  bool get isValid => _chatName.trim().isNotEmpty;
+
+  set chatName(String value) {
+    _chatName = value;
+
+    if (errorText != null) {
+      errorText = null;
+    }
+    notifyListeners();
+  }
 
   void saveChat(BuildContext context) async {
-    if (chatName.isEmpty) return;
+    final chatName = _chatName.trim();
+    if (chatName.isEmpty) {
+      errorText = 'Введите имя';
+      notifyListeners();
+      return;
+    }
 
     final box = await BoxManager.instance.openChatBox();
     final chat = Chat(name: chatName);
@@ -22,7 +39,7 @@ class ChatFormWidgetModel {
   }
 }
 
-class ChatFormWidgetModelProvider extends InheritedWidget {
+class ChatFormWidgetModelProvider extends InheritedNotifier {
   final ChatFormWidgetModel model;
 
   const ChatFormWidgetModelProvider({
@@ -30,6 +47,7 @@ class ChatFormWidgetModelProvider extends InheritedWidget {
     required this.model,
     required Widget child,
   }) : super(
+          notifier: model,
           child: child,
         );
 
