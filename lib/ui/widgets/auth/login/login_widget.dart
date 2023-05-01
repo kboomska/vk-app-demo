@@ -124,10 +124,22 @@ class _LoginFormWidgetState extends State<_LoginFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final model = LoginWidgetModelProvider.readOnly(context)?.model;
-    final errorText =
-        LoginWidgetModelProvider.noticeOf(context)?.model.errorText;
-    final isError = model?.isError ?? false;
+    final model = LoginWidgetModelProvider.noticeOf(context)?.model;
+    final errorText = model?.errorText;
+
+    InkWell suffixIcon = InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      onTap: () {
+        model?.login = '';
+        _loginTextController.text = '';
+      },
+      child: const Icon(
+        Icons.highlight_off,
+        color: AppColors.textFieldHint,
+        size: 16,
+      ),
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,26 +154,12 @@ class _LoginFormWidgetState extends State<_LoginFormWidget> {
           onChanged: (text) => model?.login = text,
           decoration: AppTextField.inputDecoration(
             hintText: 'Введите почту',
-            isError: isError,
-            suffixIcon: model?.login == ''
-                ? null
-                : InkWell(
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () {
-                      model?.login = '';
-                      _loginTextController.text = '';
-                    },
-                    child: const Icon(
-                      Icons.highlight_off,
-                      color: AppColors.textFieldHint,
-                      size: 16,
-                    ),
-                  ),
+            isError: errorText != null,
+            suffixIcon: model?.isLogin == true ? suffixIcon : null,
           ),
           keyboardType: TextInputType.emailAddress,
         ),
-        if (errorText != null && isError) ...[
+        if (errorText != null) ...[
           const SizedBox(
             height: 8,
           ),
