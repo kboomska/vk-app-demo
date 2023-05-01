@@ -7,20 +7,16 @@ class LoginWidgetModel extends ChangeNotifier {
   String _login = 'admin@mail.ru'; // For testing only!
   String? _errorText;
 
+  bool get isLogin => _login.isNotEmpty;
+  String? get errorText => _errorText;
+
   set login(String value) {
     _login = value;
 
     if (_errorText != null) {
       _errorText = null;
     }
-
     notifyListeners();
-  }
-
-  bool get isLogin => _login.isNotEmpty;
-
-  String? get errorText {
-    return _errorText;
   }
 
   void goToPasswordScreen(BuildContext context) {

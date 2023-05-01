@@ -2,6 +2,56 @@ import 'package:flutter/material.dart';
 
 import 'package:vk_app/ui/navigation/main_navigation.dart';
 
+class PasswordWidgetModel extends ChangeNotifier {
+  final String _login;
+  // String _password = '';
+  String _password = 'admin'; // For testing only!
+  String? _errorText;
+  bool _isObscure = true;
+
+  PasswordWidgetModel({required login}) : _login = login;
+
+  String get login => _login;
+  bool get isPassword => _password.isNotEmpty;
+  bool get isObscure => _isObscure;
+  String? get errorText => _errorText;
+
+  set password(String value) {
+    _password = value;
+
+    if (_errorText != null) {
+      _errorText = null;
+    }
+
+    if (value == '') {
+      _isObscure = true;
+    }
+    notifyListeners();
+  }
+
+  void obscureText() {
+    _isObscure = !_isObscure;
+
+    notifyListeners();
+  }
+
+  void goToHomeScreen(BuildContext context) {
+    final password = _password;
+
+    if (password == 'admin') {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          MainNavigationRouteNames.home, ModalRoute.withName('/'));
+    } else {
+      _errorText = 'Неверный пароль, проверьте правильность введенных данных';
+      notifyListeners();
+    }
+  }
+
+  void forgottenPassword() {
+    print('Забыли пароль?');
+  }
+}
+
 class PasswordWidgetModelProvider extends InheritedNotifier {
   final PasswordWidgetModel model;
 
@@ -24,87 +74,5 @@ class PasswordWidgetModelProvider extends InheritedNotifier {
         .getElementForInheritedWidgetOfExactType<PasswordWidgetModelProvider>()
         ?.widget;
     return widget is PasswordWidgetModelProvider ? widget : null;
-  }
-}
-
-class PasswordWidgetModel extends ChangeNotifier {
-  final String _login;
-  // String? _password;
-  String? _password = 'admin'; // For testing only!
-  String? _errorText;
-  bool? _isError;
-  // bool? _isContinue;
-  bool? _isContinue = true; // For testing only!
-  bool _isObscure = true;
-
-  PasswordWidgetModel({required login}) : _login = login;
-
-  set password(String value) {
-    _password = value;
-    _isError = false;
-
-    textFieldCheckError(value);
-    notifyListeners();
-  }
-
-  String get login {
-    return _login;
-  }
-
-  String? get errorText {
-    return _errorText;
-  }
-
-  bool? get isError {
-    return _isError;
-  }
-
-  bool? get isContinue {
-    return _isContinue;
-  }
-
-  bool get isObscure {
-    return _isObscure;
-  }
-
-  String get password {
-    return _password ?? '';
-  }
-
-  void obscureText() {
-    _isObscure = !_isObscure;
-
-    notifyListeners();
-  }
-
-  void goToHomeScreen(BuildContext context) {
-    final password = _password;
-
-    if (password == 'admin') {
-      _errorText = null;
-      _isError = false;
-
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          MainNavigationRouteNames.home, ModalRoute.withName('/'));
-    } else {
-      _errorText = 'Неверный пароль, проверьте правильность введенных данных';
-      _isError = true;
-    }
-    notifyListeners();
-  }
-
-  void textFieldCheckError(String text) {
-    _errorText = null;
-
-    if (text == '') {
-      _isContinue = false;
-      _isObscure = true;
-    } else {
-      _isContinue = true;
-    }
-  }
-
-  void forgottenPassword() {
-    print('Забыли пароль?');
   }
 }

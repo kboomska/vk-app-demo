@@ -132,12 +132,27 @@ class _PasswordFormWidgetState extends State<_PasswordFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final observeModel = PasswordWidgetModelProvider.noticeOf(context)?.model;
-    final readModel = PasswordWidgetModelProvider.readOnly(context)?.model;
+    final model = PasswordWidgetModelProvider.noticeOf(context)?.model;
+    final errorText = model?.errorText;
 
-    final errorText = observeModel?.errorText;
-    final isError = readModel?.isError ?? false;
-    bool isObscure = readModel?.isObscure ?? true;
+    InkWell suffixIcon = InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      onTap: () {
+        model?.obscureText();
+      },
+      child: model?.isObscure == true
+          ? const Icon(
+              Icons.visibility,
+              color: AppColors.textFieldHint,
+              size: 16,
+            )
+          : const Icon(
+              Icons.visibility_off,
+              color: AppColors.textFieldHint,
+              size: 16,
+            ),
+    );
 
     return Column(
       children: [
@@ -150,35 +165,16 @@ class _PasswordFormWidgetState extends State<_PasswordFormWidget> {
             ),
             cursorColor: AppColors.logoBlue,
             cursorHeight: 20,
-            obscureText: isObscure,
-            onChanged: (text) => readModel?.password = text,
+            obscureText: model?.isObscure == true,
+            onChanged: (text) => model?.password = text,
             decoration: AppTextField.inputDecoration(
               hintText: 'Введите пароль',
-              isError: isError,
-              suffixIcon: readModel?.password == ''
-                  ? null
-                  : InkWell(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () {
-                        readModel?.obscureText();
-                      },
-                      child: isObscure
-                          ? const Icon(
-                              Icons.visibility,
-                              color: AppColors.textFieldHint,
-                              size: 16,
-                            )
-                          : const Icon(
-                              Icons.visibility_off,
-                              color: AppColors.textFieldHint,
-                              size: 16,
-                            ),
-                    ),
+              isError: errorText != null,
+              suffixIcon: model?.isPassword == true ? suffixIcon : null,
             ),
           ),
         ),
-        if (errorText != null && isError) ...[
+        if (errorText != null) ...[
           const SizedBox(
             height: 8,
           ),
@@ -225,18 +221,14 @@ class _ContinueButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isContinue =
-        PasswordWidgetModelProvider.noticeOf(context)?.model.isContinue ??
-            false;
+    final model = PasswordWidgetModelProvider.noticeOf(context)?.model;
 
     return OutlinedButton(
-      onPressed: isContinue
-          ? () => PasswordWidgetModelProvider.readOnly(context)
-              ?.model
-              .goToHomeScreen(context)
+      onPressed: model?.isPassword == true
+          ? () => model?.goToHomeScreen(context)
           : null,
       style: AppButtonStyle.blueStyleDeactivableButton(
-        isActive: isContinue,
+        isActive: model?.isPassword == true,
       ),
       child: const Text(
         'Продолжить',
